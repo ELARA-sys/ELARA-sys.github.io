@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zhang Mingchang · Projects</title>
+<meta name="description" content="Projects by Zhang Mingchang: solid-fuel rocket hardware design and fabrication, a ROS 2 navigation project in simulation, weld crack detection with YOLOv5, and route ordering.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F4E99'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3EZM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --text: #16202e;
+    --muted: #5b6472;
+    --line: #e3e5e8;
+    --accent: #1f4e99;
+    --accent-soft: #edf2fa;
+    --radius: 10px;
+    --wrap: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, video { display: block; max-width: 100%; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible, .card:focus-visible, .yt:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.88em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+
+  /* Header */
+  header.top { padding: 72px 0 28px; }
+  .name { font-size: clamp(32px, 5vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+  .tagline { font-size: 19px; color: var(--muted); margin: 10px 0 18px; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 500; font-size: 15px; }
+  .about { max-width: 720px; margin: 26px 0 0; }
+
+  /* Project cards */
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 44px 0 8px; }
+  .card { display: block; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: border-color .15s, transform .15s; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card .thumb { aspect-ratio: 4 / 3; background: #eef0f3; overflow: hidden; }
+  .card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .card .thumb.contain img { object-fit: contain; background: #fff; }
+  .card .body { padding: 12px 14px 14px; }
+  .card h3 { font-size: 15px; line-height: 1.35; margin: 0 0 4px; }
+  .card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.45; }
+
+  /* Sections */
+  section.project { padding: 64px 0 8px; border-top: 1px solid var(--line); margin-top: 56px; scroll-margin-top: 16px; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+  h2 { font-size: clamp(25px, 3.4vw, 31px); line-height: 1.25; letter-spacing: -0.015em; margin: 0 0 8px; }
+  .meta { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; padding: 0; list-style: none; }
+  .tags li { font-size: 12.5px; font-weight: 500; color: var(--muted); border: 1px solid var(--line); background: var(--surface); padding: 2px 10px; border-radius: 999px; }
+  h3.sub { font-size: 19px; margin: 40px 0 8px; letter-spacing: -0.01em; }
+  .lead { font-size: 18.5px; max-width: 760px; }
+  .prose { max-width: 760px; }
+  .prose ul { padding-left: 20px; margin: 8px 0 0; }
+  .prose li { margin: 4px 0; }
+
+  /* Figures */
+  .figs { display: grid; gap: 16px; margin: 22px 0 6px; align-items: start; }
+  .figs.c2 { grid-template-columns: repeat(2, 1fr); }
+  .figs.c3 { grid-template-columns: repeat(3, 1fr); }
+  .figs.c4 { grid-template-columns: repeat(4, 1fr); }
+  .figs.hero { grid-template-columns: 1.15fr .85fr; max-width: 680px; }
+  figure { margin: 0; }
+  .frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .frame.fixed { aspect-ratio: 3 / 4; }
+  .frame.fixed img { width: 100%; height: 100%; object-fit: cover; }
+  .frame.fixed.contain img { object-fit: contain; padding: 10px; }
+  .frame.tall { aspect-ratio: 5 / 8; }
+  .frame.tall img { width: 100%; height: 100%; object-fit: contain; padding: 8px; background: #fff; }
+  .frame.tall.photo img { object-fit: cover; padding: 0; }
+  figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+  .pair-label { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 28px 0 8px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px 12px; }
+  .stat .num { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+  .stat .lbl { font-size: 13px; color: var(--muted); line-height: 1.4; margin-top: 4px; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; margin: 18px 0 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 560px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; background: #f6f7f9; }
+  tr:last-child td { border-bottom: 0; }
+
+  /* Callout */
+  .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin: 22px 0 6px; max-width: 760px; }
+  .callout p { margin: 0 0 8px; }
+  .callout p:last-child { margin: 0; }
+  .note { font-size: 14px; color: var(--muted); max-width: 760px; margin-top: 18px; }
+
+  /* Video */
+  .video-row { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; margin: 22px 0 6px; }
+  .video-row video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; }
+  .yts { display: grid; grid-template-columns: repeat(3, minmax(0, 200px)); gap: 16px; margin: 18px 0 6px; }
+  .yt { display: block; text-decoration: none; color: inherit; }
+  .yt .frame { aspect-ratio: 9 / 16; position: relative; background: #111; }
+  .yt img { width: 100%; height: 100%; object-fit: cover; opacity: .92; }
+  .yt .play { position: absolute; inset: 0; display: grid; place-items: center; }
+  .yt .play span { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+  .yt .play span::before { content: ""; border-left: 16px solid var(--text); border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+  .yt:hover .play span { background: #fff; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 0; }
+  .btn { display: inline-block; font-size: 15px; font-weight: 600; text-decoration: none; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--accent); color: var(--accent); background: var(--surface); }
+  .btn:hover { background: var(--accent-soft); }
+
+  footer { border-top: 1px solid var(--line); margin-top: 72px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+
+  @media (max-width: 860px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .figs.c4 { grid-template-columns: repeat(2, 1fr); }
+    .figs.c3 { grid-template-columns: repeat(2, 1fr); }
+    .video-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    body { font-size: 16px; }
+    header.top { padding-top: 48px; }
+    .figs.c2, .figs.hero { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .yts { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat .num { font-size: 22px; }
+    .lead { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1 class="name">Zhang Mingchang</h1>
+    <p class="tagline">Mechanical design, robotics software and machine vision</p>
+    <div class="links">
+      <a href="https://github.com/ELARA-sys">GitHub</a>
+      <a href="assets/Zhang_Mingchang_Rocket_Portfolio.pdf">Rocket portfolio (PDF)</a>
+    </div>
+    <p class="about">I studied Measurement and Control Technology and Instrumentation at Hebei University of Science and Technology, where my best work outside class was designing and building the hardware of a solid-fuel rocket. I then trained in software at NUS-ISS, where I have completed the coursework of the Graduate Diploma in Systems Analysis (graduating January 2027). I am now bringing the two together in robotics.</p>
+  </header>
+
+  <nav class="cards" aria-label="Projects">
+    <a class="card" href="#rocket">
+      <div class="thumb"><img src="assets/rocket-landed-parachute.jpg" alt="Rocket lying on the ground after landing under its parachute"></div>
+      <div class="body"><h3>Solid-fuel rocket</h3><p>Hardware design and fabrication, 2020–2022</p></div>
+    </a>
+    <a class="card" href="#ros">
+      <div class="thumb"><img src="assets/ros-patrol-poster.jpg" alt="Overhead view of a simulated TurtleBot3 patrolling between waypoints"></div>
+      <div class="body"><h3>ROS 2 waypoint patrol</h3><p>SLAM and Nav2 in simulation, 2026</p></div>
+    </a>
+    <a class="card" href="#weld">
+      <div class="thumb contain"><div style="height:100%;display:grid;place-items:center;background:#16202e;color:#fff;font-weight:600;font-size:15px;text-align:center;padding:12px;line-height:1.35">X-ray weld<br>crack detection<br><span style="font-weight:400;opacity:.75;font-size:13px">YOLOv5 · OpenCV</span></div></div>
+      <div class="body"><h3>Weld crack detection</h3><p>Machine vision, final-year thesis, 2024</p></div>
+    </a>
+    <a class="card" href="#loomytrip">
+      <div class="thumb contain"><div style="height:100%;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:600;font-size:15px;text-align:center;padding:12px;line-height:1.35">Route ordering<br>and model evaluation<br><span style="font-weight:400;opacity:.8;font-size:13px">2-opt · precision / recall / F1</span></div></div>
+      <div class="body"><h3>LoomyTrip</h3><p>NUS-ISS team capstone, 2026</p></div>
+    </a>
+  </nav>
+
+  <!-- ============ ROCKET ============ -->
+  <section class="project" id="rocket">
+    <p class="eyebrow">Project 1 · Hardware</p>
+    <h2>Solid-fuel rocket: hardware design and fabrication</h2>
+    <p class="meta">2020–2022 · Solid-fuel rocket group, Hebei University of Science and Technology aeromodelling team</p>
+    <ul class="tags"><li>OpenRocket</li><li>SolidWorks</li><li>AutoCAD / DXF</li><li>Laser cutting</li><li>Composites</li><li>3D printing</li></ul>
+
+    <p class="lead">I was mainly responsible for the rocket's hardware: the structural design, the drawings and the fabrication of the whole rocket, from the nose cone, fins and body tube to the recovery system. A teammate handled the software.</p>
+
+    <div class="figs hero">
+      <figure>
+        <div class="frame tall photo"><img src="assets/rocket-assembled.jpg" alt="Assembled solid-fuel rocket standing on a table with its parachute" loading="lazy"></div>
+        <figcaption>Assembled rocket with parachute, Nov 2020</figcaption>
+      </figure>
+      <figure>
+        <div class="frame tall"><img src="assets/rocket-cad.jpg" alt="CAD side drawing of the full rocket with dimensions" loading="lazy"></div>
+        <figcaption>CAD drawing of the 2021 test rocket (mm)</figcaption>
+      </figure>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">50+</div><div class="lbl">test and practice launches</div></div>
+      <div class="stat"><div class="num">≈ 9 / 10</div><div class="lbl">parachute openings after my recovery redesign</div></div>
+      <div class="stat"><div class="num">4th</div><div class="lbl">national, team event, CADC 2021</div></div>
+      <div class="stat"><div class="num">38 m</div><div class="lbl">first test flight against a 40 m target (as group leader)</div></div>
+    </div>
+
+    <div class="prose">
+      <h3 class="sub">How I designed and built it</h3>
+      <ul>
+        <li>Worked out the overall layout in OpenRocket, checking the positions of the centre of mass and centre of pressure for stability, then modelled the details in SolidWorks.</li>
+        <li>Drew the parts in CAD, exported them as DXF files and cut them on a laser cutter: balsa and plywood ribs, fins and bulkheads.</li>
+        <li>Built the airframe with carbon rods, carbon-fibre reinforcement, a fibreglass-and-resin body tube and some 3D-printed parts.</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">Recovery system: from side hatch to piston ejection</h3>
+    <div class="prose">
+      <p>This was my main contribution. The old design released the parachute through a side hatch and opened only about one time in two, because the canopy caught on the rocket body. I replaced the hatch with a piston: gas from a small ejection charge pushes the nose cone and the parachute out of the tube together, so the canopy has nothing to snag on. I found the charge size by testing, proved the design with a ground test, and the team adopted it. None of the ten cohorts before us had tried this structure, and the teams after us kept using it.</p>
+    </div>
+    <div class="figs c3">
+      <figure>
+        <div class="frame fixed"><img src="assets/rocket-side-hatch.jpg" alt="Close-up of the side hatch on an earlier body tube" loading="lazy"></div>
+        <figcaption><strong>Before:</strong> side hatch on the earlier body tube, Nov 2020</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/rocket-landed-parachute.jpg" alt="Rocket on the ground with its parachute deployed after a test flight" loading="lazy"></div>
+        <figcaption><strong>After:</strong> landed under its parachute, test flight, Jul 2021</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/rocket-cadc-launch.jpg" alt="Smoke trail of a rocket climbing into a blue sky" loading="lazy"></div>
+        <figcaption>Launch at the CADC 2021 national final, Fuxin. Our team placed 4th in the multi-stage model rocket launch and payload recovery team event.</figcaption>
+      </figure>
+    </div>
+
+    <h3 class="sub">From drawing to part</h3>
+    <p class="prose">Each pair shows a cutting drawing and the part made from it.</p>
+    <div class="figs c4">
+      <figure>
+        <div class="frame fixed contain"><img src="assets/nosecone-drawing.jpg" alt="Laser-cutting drawing of the nose cone ribs" loading="lazy"></div>
+        <figcaption>Nose cone rib set, drawing</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/nosecone-ribs.jpg" alt="Laser-cut wooden nose cone rib frame" loading="lazy"></div>
+        <figcaption>Nose cone ribs before skinning</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed contain"><img src="assets/fin-drawing.jpg" alt="Cutting drawing of a balsa fin truss" loading="lazy"></div>
+        <figcaption>Fin truss, drawing</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/fin-frame.jpg" alt="Laser-cut balsa fin truss frame" loading="lazy"></div>
+        <figcaption>Balsa fin frame</figcaption>
+      </figure>
+    </div>
+    <div class="figs c4">
+      <figure>
+        <div class="frame fixed"><img src="assets/fin-covered.jpg" alt="Fin frame after covering" loading="lazy"></div>
+        <figcaption>Fin frame after covering</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/body-tube.jpg" alt="Fibreglass and resin body tube" loading="lazy"></div>
+        <figcaption>Fibreglass-and-resin body tube</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/bulkhead.jpg" alt="Laser-cut plywood motor-mount bulkhead" loading="lazy"></div>
+        <figcaption>Laser-cut motor-mount bulkhead</figcaption>
+      </figure>
+      <figure>
+        <div class="frame fixed"><img src="assets/bulkhead-fitted.jpg" alt="Tube section with the bulkhead fitted" loading="lazy"></div>
+        <figcaption>Tube section with bulkhead fitted</figcaption>
+      </figure>
+    </div>
+
+    <h3 class="sub">As group leader: a target-altitude event</h3>
+    <div class="prose">
+      <p>In 2022 I led the rocket group. The event changed to target altitude, scored on how close the rocket's highest point came to 40 m. Before training began, I redesigned the rocket's internal structure and drew and built the new version myself. Its first test flight reached 38 m, and that design set the direction for the group's competition model that year.</p>
+      <p>Also: Third Prize in the University Aerospace Innovation Challenge 2021 (university round), with a model rocket where I did everything except the software.</p>
+    </div>
+
+    <h3 class="sub">Videos</h3>
+    <div class="yts">
+      <a class="yt" href="https://youtube.com/shorts/f59oAd91Sxc" target="_blank" rel="noopener">
+        <div class="frame"><img src="https://i.ytimg.com/vi/f59oAd91Sxc/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+        <figcaption>Test flight: landing under the parachute</figcaption>
+      </a>
+      <a class="yt" href="https://youtube.com/shorts/V23yIQ5HWlk" target="_blank" rel="noopener">
+        <div class="frame"><img src="https://i.ytimg.com/vi/V23yIQ5HWlk/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+        <figcaption>CADC 2021 national final: launch</figcaption>
+      </a>
+      <a class="yt" href="https://youtube.com/shorts/x3F7QiUBE5Y" target="_blank" rel="noopener">
+        <div class="frame"><img src="https://i.ytimg.com/vi/x3F7QiUBE5Y/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+        <figcaption>Test flight: launch to recovery</figcaption>
+      </a>
+    </div>
+
+    <div class="actions">
+      <a class="btn" href="assets/Zhang_Mingchang_Rocket_Portfolio.pdf">Full rocket portfolio (PDF, 3 pages)</a>
+    </div>
+  </section>
+
+  <!-- ============ ROS 2 ============ -->
+  <section class="project" id="ros">
+    <p class="eyebrow">Project 2 · Robotics software</p>
+    <h2>ROS 2 waypoint patrol with SLAM and Nav2</h2>
+    <p class="meta">Oct 2026 · Simulation · Learned ROS 2 from scratch in about a week</p>
+    <ul class="tags"><li>ROS 2 Jazzy</li><li>Gazebo Harmonic</li><li>SLAM Toolbox</li><li>Nav2</li><li>Python (rclpy)</li><li>RViz</li><li>WSL2</li></ul>
+
+    <div class="video-row">
+      <figure>
+        <video autoplay muted loop playsinline preload="metadata" poster="assets/ros-patrol-poster.jpg" aria-label="Overhead view of a simulated TurtleBot3 visiting waypoints A, B and C and driving around a box">
+          <source src="assets/ros-patrol-demo.mp4" type="video/mp4">
+          <a href="https://github.com/ELARA-sys/turtlebot3-port-patrol">Watch the demo on GitHub</a>
+        </video>
+        <figcaption>One patrol run at 12× real time. Each red ring is the 0.25 m area where Nav2 counts a goal as reached. The orange box was added after mapping, so Nav2 only sees it through the LiDAR.</figcaption>
+      </figure>
+      <div class="prose">
+        <p class="lead" style="margin-top:0">A TurtleBot3 in Gazebo builds a map of its arena with SLAM, then uses Nav2 to visit three waypoints one goal at a time. The patrol node skips any waypoint that fails or times out and prints a summary at the end.</p>
+        <p><strong>What I did:</strong></p>
+        <ul>
+          <li>Set up ROS 2 Jazzy, Gazebo, SLAM Toolbox and Nav2 on WSL2.</li>
+          <li>Ran the SLAM mapping, saved the map and ran Nav2 localization (AMCL) on it.</li>
+          <li>Chose the waypoints, wrote the parameter file, and built and ran the package.</li>
+          <li>Designed and ran the tests below, and debugged the problems along the way.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub">Tests</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Test</th><th>Setup</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>1. Clear route</td><td>No extra obstacles</td><td>3/3 waypoints reached, 128.7 s</td></tr>
+          <tr><td>2. Obstacle on route</td><td>0.3 m box on the B → C route, not in the map</td><td>3/3 reached in all 3 runs. The planned B → C path was 1.71 m with the box, against 1.46 m without it</td></tr>
+          <tr><td>3. Unreachable waypoint</td><td>Box placed on top of B, 60 s timeout</td><td>A reached, B timed out and was skipped, C reached: 2/3, 105.6 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Limits: only a few runs per test, one obstacle size, simulation only (Gazebo ran at about 50–75% of real time on my laptop), no moving obstacles and no real robot.</p>
+
+    <div class="callout">
+      <p><strong>The main problem I debugged.</strong> Nav2 planned a path, but the robot did not move, and the log said "Failed to make progress". From the logs and topic rates, I found that the slow simulator delivered LiDAR scans only about every 0.6 s, while Nav2's collision monitor, the last safety check before speed commands reach the wheels, treats scans older than 0.2 s as stale and blocks every command.</p>
+      <p>I raised <code>scan.source_timeout</code> to 2.0 s in a project copy of the Nav2 parameter file. Changing it at runtime had no effect, because the node only reads it at startup. On a real robot this setting would be unsafe, since it would let the robot act on old sensor data. Here it only compensates for a slow simulator.</p>
+    </div>
+
+    <figure style="max-width:420px;margin-top:28px">
+      <div class="frame"><img src="assets/ros-slam-map.png" width="888" height="824" alt="Occupancy grid map of the arena: nine pillars inside a hexagonal wall" loading="lazy" style="image-rendering:pixelated;width:100%;height:auto"></div>
+      <figcaption>The saved SLAM map (5 cm cells): nine pillars inside a hexagonal wall</figcaption>
+    </figure>
+
+    <p class="note">Built on TurtleBot3 (ROBOTIS), SLAM Toolbox and Nav2. The patrol node was written with AI assistance and explained to me block by block; the setup, testing and debugging were my own.</p>
+
+    <div class="actions">
+      <a class="btn" href="https://github.com/ELARA-sys/turtlebot3-port-patrol">Code, test log and README on GitHub</a>
+    </div>
+  </section>
+
+  <!-- ============ WELD ============ -->
+  <section class="project" id="weld">
+    <p class="eyebrow">Project 3 · Machine vision</p>
+    <h2>Weld crack detection in X-ray images</h2>
+    <p class="meta">2024 · Final-year thesis, Hebei University of Science and Technology</p>
+    <ul class="tags"><li>Python</li><li>OpenCV</li><li>YOLOv5</li><li>Data labelling</li></ul>
+    <p class="lead">Weld inspection is skilled work that is usually done by eye. For my final-year thesis, I built a system that detects cracks in X-ray images of welds. I enhanced the images with OpenCV, labelled the cracks myself and trained a YOLOv5 detector. It was my first experience of teaching a machine to see, and it showed me how much a model depends on how carefully its data is prepared.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">364</div><div class="lbl">X-ray images</div></div>
+      <div class="stat"><div class="num">2,000+</div><div class="lbl">cracks labelled</div></div>
+      <div class="stat"><div class="num">0.94</div><div class="lbl">F1 score on the validation images</div></div>
+    </div>
+  </section>
+
+  <!-- ============ LOOMYTRIP ============ -->
+  <section class="project" id="loomytrip">
+    <p class="eyebrow">Project 4 · Planning and evaluation</p>
+    <h2>LoomyTrip: route ordering and model evaluation</h2>
+    <p class="meta">Jul–Aug 2026 · NUS-ISS capstone, team of seven · I led the AI/ML service</p>
+    <ul class="tags"><li>Python</li><li>FastAPI</li><li>2-opt local search</li><li>Precision / recall / F1</li><li>AWS ECS</li></ul>
+    <p class="lead">LoomyTrip is a travel planner for Singapore that turns a free-text trip description into a day-by-day itinerary. Two parts of my work on its AI service are close to robotics.</p>
+    <div class="prose">
+      <ul>
+        <li><strong>Route ordering.</strong> Each day's stops are ordered with a nearest-neighbour route, which a 2-opt local search then improves by reversing any segment that shortens the total distance. On 50 seeded routes of real Singapore attractions, it was 1.8% shorter on average and never longer. On a deliberately bad layout, it cut the distance by 31.3%.</li>
+        <li><strong>Evaluation instead of judging by eye.</strong> I scored the language model's place extraction against hand-labelled answers with precision, recall and F1, and used accuracy, speed and cost to choose the model.</li>
+      </ul>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">1.8%</div><div class="lbl">shorter routes on average with 2-opt (50 routes)</div></div>
+      <div class="stat"><div class="num">0 / 50</div><div class="lbl">routes made longer</div></div>
+      <div class="stat"><div class="num">0.944</div><div class="lbl">extraction F1 with fuzzy matching (0.833 strict)</div></div>
+    </div>
+  </section>
+
+  <footer>Zhang Mingchang · <a href="https://github.com/ELARA-sys">github.com/ELARA-sys</a></footer>
+</div>
+</body>
+</html>
