@@ -4,293 +4,492 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zhang Mingchang · Projects</title>
-<meta name="description" content="Projects by Zhang Mingchang: solid-fuel rocket hardware design and fabrication, a ROS 2 navigation project in simulation, weld crack detection with YOLOv5, and route ordering.">
+<meta name="description" content="Projects by Zhang Mingchang: solid-fuel rocket hardware design and fabrication, a ROS 2 waypoint patrol with SLAM and Nav2 in simulation, weld crack detection with YOLOv5, and route ordering and model evaluation.">
+<meta name="theme-color" content="#f5f6f4">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://elara-sys.github.io/">
+<meta property="og:title" content="Zhang Mingchang · Projects">
+<meta property="og:description" content="Mechanical design, robotics software and machine vision: rocket hardware, a ROS 2 patrol with SLAM and Nav2, and weld crack detection.">
+<meta property="og:image" content="https://elara-sys.github.io/assets/rocket-assembled.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F4E99'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3EZM%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap"></noscript>
 <style>
   :root {
-    --bg: #fafaf7;
-    --surface: #ffffff;
-    --text: #16202e;
-    --muted: #5b6472;
-    --line: #e3e5e8;
-    --accent: #1f4e99;
-    --accent-soft: #edf2fa;
-    --radius: 10px;
-    --wrap: 1040px;
+    --paper: #f5f6f4;
+    --sheet: #ffffff;
+    --ink: #15191e;
+    --graphite: #545b65;
+    --rule: #d9dde1;
+    --rule-strong: #b8bfc6;
+    --blue: #1f4e99;
+    --blue-tint: #eaf0f8;
+    --wrap: 1080px;
+    --measure: 42rem;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
-  img, video { display: block; max-width: 100%; }
-  a { color: var(--accent); text-underline-offset: 3px; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.6 var(--sans); }
+  img, video, svg { display: block; max-width: 100%; height: auto; }
+  a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
   a:hover { text-decoration-thickness: 2px; }
-  a:focus-visible, .card:focus-visible, .yt:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-  code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.88em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 2px; }
+  h1, h2, h3 { font-weight: 600; line-height: 1.2; margin: 0; }
+  p { margin: 0 0 0.9em; }
+  code { font: 0.86em var(--mono); background: var(--blue-tint); padding: 0.1em 0.35em; border-radius: 3px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
 
-  /* Header */
-  header.top { padding: 72px 0 28px; }
-  .name { font-size: clamp(32px, 5vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
-  .tagline { font-size: 19px; color: var(--muted); margin: 10px 0 18px; }
-  .links { display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 500; font-size: 15px; }
-  .about { max-width: 720px; margin: 26px 0 0; }
+  /* Masthead */
+  .masthead { padding-top: 64px; }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 56px; align-items: end; }
+  h1 { font-size: clamp(2.1rem, 4.4vw, 2.85rem); letter-spacing: -0.015em; }
+  .tagline { font-size: 1.15rem; color: var(--graphite); margin: 0.4rem 0 1.1rem; }
+  .contact { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 22px; font-weight: 500; font-size: 0.95rem; }
+  .about { margin: 0; max-width: var(--measure); }
+  .sheet {
+    margin: 40px 0 0; border: 1px solid var(--rule-strong); border-radius: 6px; overflow: hidden;
+    background: var(--sheet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 .5H.5V24' fill='none' stroke='%231f4e99' stroke-opacity='.09'/%3E%3C/svg%3E");
+  }
+  .sheet .band { width: 100%; padding: 28px 32px 18px; }
+  .titleblock-mini { display: flex; justify-content: flex-end; max-width: none; margin: 0; font-size: 0.8rem; color: var(--graphite); }
+  .titleblock-mini span { padding: 6px 14px; border-top: 1px solid var(--rule-strong); border-left: 1px solid var(--rule-strong); background: var(--sheet); }
 
-  /* Project cards */
-  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 44px 0 8px; }
-  .card { display: block; text-decoration: none; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: border-color .15s, transform .15s; }
-  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .card .thumb { aspect-ratio: 4 / 3; background: #eef0f3; overflow: hidden; }
-  .card .thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .card .thumb.contain img { object-fit: contain; background: #fff; }
-  .card .body { padding: 12px 14px 14px; }
-  .card h3 { font-size: 15px; line-height: 1.35; margin: 0 0 4px; }
-  .card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.45; }
+  /* Project index */
+  .projects { margin-top: 24px; }
+  .projects ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .projects a { display: block; height: 100%; color: inherit; text-decoration: none; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .projects a:hover { border-color: var(--blue); }
+  .projects a:hover .t { color: var(--blue); }
+  .thumb { display: block; aspect-ratio: 4 / 3; overflow: hidden; border-bottom: 1px solid var(--rule); background: #eef0f2; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb.plot { background: var(--sheet); display: grid; place-items: center; padding: 10px 6px; }
+  .projects .t { display: block; font-weight: 600; font-size: 0.98rem; line-height: 1.3; padding: 12px 14px 2px; }
+  .projects .s { display: block; font-size: 0.84rem; line-height: 1.4; color: var(--graphite); padding: 0 14px 14px; }
 
-  /* Sections */
-  section.project { padding: 64px 0 8px; border-top: 1px solid var(--line); margin-top: 56px; scroll-margin-top: 16px; }
-  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
-  h2 { font-size: clamp(25px, 3.4vw, 31px); line-height: 1.25; letter-spacing: -0.015em; margin: 0 0 8px; }
-  .meta { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; padding: 0; list-style: none; }
-  .tags li { font-size: 12.5px; font-weight: 500; color: var(--muted); border: 1px solid var(--line); background: var(--surface); padding: 2px 10px; border-radius: 999px; }
-  h3.sub { font-size: 19px; margin: 40px 0 8px; letter-spacing: -0.01em; }
-  .lead { font-size: 18.5px; max-width: 760px; }
-  .prose { max-width: 760px; }
-  .prose ul { padding-left: 20px; margin: 8px 0 0; }
-  .prose li { margin: 4px 0; }
+  /* Project sections */
+  .project { padding-top: 88px; scroll-margin-top: 0; }
+  .project-head { border-top: 2px solid var(--ink); padding-top: 22px; }
+  h2 { font-size: clamp(1.55rem, 3vw, 2rem); letter-spacing: -0.01em; max-width: 32ch; }
+  .summary { font-size: 1.12rem; max-width: var(--measure); margin: 0.75rem 0 0; }
+  .titleblock { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr) minmax(0, 1.5fr) minmax(0, 2fr); margin: 24px 0 0; border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--sheet); }
+  .titleblock > div { padding: 10px 14px 12px; border-left: 1px solid var(--rule); }
+  .titleblock > div:first-child { border-left: 0; }
+  .titleblock dt { font-size: 0.76rem; color: var(--graphite); margin-bottom: 3px; }
+  .titleblock dd { margin: 0; font-size: 0.9rem; line-height: 1.45; }
+  .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px 6px; }
+  .tags li { font-size: 0.8rem; line-height: 1.6; padding: 0 7px; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); }
+  h3 { font-size: 1.2rem; margin: 48px 0 10px; letter-spacing: -0.005em; }
+  .prose { max-width: var(--measure); }
+  .prose ul { margin: 0; padding-left: 1.15em; }
+  .prose li { margin: 0.35em 0; }
+  .prose li::marker { color: var(--graphite); }
+  .small { font-size: 0.9rem; color: var(--graphite); max-width: var(--measure); }
 
   /* Figures */
-  .figs { display: grid; gap: 16px; margin: 22px 0 6px; align-items: start; }
-  .figs.c2 { grid-template-columns: repeat(2, 1fr); }
-  .figs.c3 { grid-template-columns: repeat(3, 1fr); }
-  .figs.c4 { grid-template-columns: repeat(4, 1fr); }
-  .figs.hero { grid-template-columns: 1.15fr .85fr; max-width: 680px; }
   figure { margin: 0; }
-  .frame { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-  .frame.fixed { aspect-ratio: 3 / 4; }
-  .frame.fixed img { width: 100%; height: 100%; object-fit: cover; }
-  .frame.fixed.contain img { object-fit: contain; padding: 10px; }
-  .frame.tall { aspect-ratio: 5 / 8; }
-  .frame.tall img { width: 100%; height: 100%; object-fit: contain; padding: 8px; background: #fff; }
-  .frame.tall.photo img { object-fit: cover; padding: 0; }
-  figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
-  .pair-label { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  .fig { margin-top: 28px; }
+  figcaption { font-size: 0.84rem; line-height: 1.45; color: var(--graphite); margin-top: 8px; max-width: var(--measure); }
+  .frame { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .frame.draw img { object-fit: contain; padding: 14px; }
+  .r34 { aspect-ratio: 3 / 4; }
+  .r11 { aspect-ratio: 1; }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .narrow { max-width: 640px; }
 
-  /* Stats */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 28px 0 8px; }
-  .stat { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px 12px; }
-  .stat .num { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-  .stat .lbl { font-size: 13px; color: var(--muted); line-height: 1.4; margin-top: 4px; }
+  /* Key results */
+  .results { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); margin: 28px 0 0; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); }
+  .results > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; padding: 14px 18px 16px; border-left: 1px solid var(--rule); }
+  .results > div:first-child { border-left: 0; }
+  .results dd { margin: 0; font-size: 1.75rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .results dt { font-size: 0.84rem; line-height: 1.4; color: var(--graphite); margin-top: 6px; }
 
-  /* Table */
-  .table-wrap { overflow-x: auto; margin: 18px 0 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 560px; }
-  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; background: #f6f7f9; }
+  /* Schematic */
+  .schem-wrap { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 18px 8px; max-width: 760px; }
+  .schem { min-width: 560px; width: 100%; }
+  .schem.narrow { display: none; min-width: 0; }
+  .schem text { font: 12.5px var(--sans); fill: var(--ink); }
+  .schem .rowlabel { font-weight: 600; font-size: 13px; }
+  .schem .tube { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.5; }
+  .schem .charge { fill: var(--graphite); }
+  .schem .spent { fill: none; stroke: var(--graphite); stroke-dasharray: 3 3; }
+  .schem .gas { fill: #e3e7eb; }
+  .schem .piston { fill: var(--blue); }
+  .schem .chute { fill: var(--blue-tint); stroke: var(--blue); stroke-width: 1.2; }
+  .schem .fold { stroke: var(--blue); stroke-opacity: 0.35; }
+  .schem .cone { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.5; }
+  .schem .tick { stroke: var(--graphite); stroke-width: 1; }
+  .schem .arrow { stroke: var(--blue); stroke-width: 1.5; fill: none; }
+  .schem .head { fill: var(--blue); }
+  .schem .note { fill: var(--blue); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin-top: 20px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+  .tests table { min-width: 560px; }
+  .models table { min-width: 520px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 500; font-size: 0.84rem; color: var(--graphite); background: #f8f9f9; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   tr:last-child td { border-bottom: 0; }
+  tr.chosen td { background: var(--blue-tint); }
 
-  /* Callout */
-  .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; margin: 22px 0 6px; max-width: 760px; }
-  .callout p { margin: 0 0 8px; }
-  .callout p:last-child { margin: 0; }
-  .note { font-size: 14px; color: var(--muted); max-width: 760px; margin-top: 18px; }
+  /* Notes */
+  .note { background: var(--blue-tint); border-radius: 6px; padding: 16px 20px; margin-top: 28px; max-width: 46rem; }
+  .note h3 { font-size: 1rem; margin: 0 0 6px; }
+  .note p:last-child { margin-bottom: 0; }
 
-  /* Video */
-  .video-row { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; margin: 22px 0 6px; }
-  .video-row video { width: 100%; border-radius: var(--radius); border: 1px solid var(--line); background: #000; }
-  .yts { display: grid; grid-template-columns: repeat(3, minmax(0, 200px)); gap: 16px; margin: 18px 0 6px; }
-  .yt { display: block; text-decoration: none; color: inherit; }
-  .yt .frame { aspect-ratio: 9 / 16; position: relative; background: #111; }
-  .yt img { width: 100%; height: 100%; object-fit: cover; opacity: .92; }
-  .yt .play { position: absolute; inset: 0; display: grid; place-items: center; }
-  .yt .play span { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,.92); display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
-  .yt .play span::before { content: ""; border-left: 16px solid var(--text); border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
-  .yt:hover .play span { background: #fff; }
-  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 0; }
-  .btn { display: inline-block; font-size: 15px; font-weight: 600; text-decoration: none; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--accent); color: var(--accent); background: var(--surface); }
-  .btn:hover { background: var(--accent-soft); }
+  /* ROS video */
+  .video-row { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 36px; align-items: start; margin-top: 28px; }
+  .video-row video { width: 100%; border-radius: 6px; border: 1px solid var(--rule); background: #000; }
+  .video-row h3:first-child { margin-top: 0; }
+  .map { max-width: 380px; }
+  .map img { image-rendering: pixelated; width: 100%; height: auto; }
 
-  footer { border-top: 1px solid var(--line); margin-top: 72px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+  /* Videos */
+  .videos { display: grid; grid-template-columns: repeat(3, minmax(0, 190px)); gap: 16px; margin-top: 16px; }
+  .yt { position: relative; display: block; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; background: #111; }
+  .yt img { width: 100%; height: 100%; object-fit: cover; }
+  .yt .play { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: rgba(255, 255, 255, 0.92); }
+  .yt .play::before { content: ""; position: absolute; left: 21px; top: 16px; border-left: 17px solid var(--ink); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
+  .yt:hover .play { background: #fff; }
+  .yt iframe { width: 100%; height: 100%; border: 0; }
+
+  /* Weld label / prediction pairs */
+  .pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; margin-top: 28px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .two img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
+  .two span { display: block; font-size: 0.78rem; color: var(--graphite); margin-top: 4px; }
+  .curves img { border: 1px solid var(--rule); border-radius: 6px; background: #fff; }
+
+  /* Routes */
+  .routes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+  .routes figure { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 14px 8px; }
+  .routes .head { font-weight: 600; font-size: 0.95rem; margin: 0 0 4px; }
+  .routes .head span { font-weight: 400; color: var(--graphite); }
+  svg.route .leg { fill: none; stroke-width: 2; stroke-linejoin: round; }
+  svg.route.nn .leg { stroke: var(--graphite); stroke-dasharray: 5 4; }
+  svg.route.opt .leg, svg.route.mini .leg { stroke: var(--blue); }
+  svg.route .stop { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.5; }
+  svg.route .stop.first { fill: var(--ink); }
+  svg.route .num { font: 600 10px var(--sans); text-anchor: middle; fill: var(--ink); }
+  svg.route .first + .num { fill: #fff; }
+  svg.route .place { font: 12.5px var(--sans); fill: var(--ink); }
+  svg.route .scale line { stroke: var(--ink); stroke-width: 1.5; }
+  svg.route .scale text { font: 11px var(--sans); fill: var(--graphite); }
+  svg.route.mini { width: 100%; height: 100%; }
+  svg.route.mini .stop { stroke-width: 3; }
+  svg.route.mini .leg { stroke-width: 5; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .btn { display: inline-block; font-weight: 500; font-size: 0.95rem; padding: 8px 14px; border: 1px solid var(--blue); border-radius: 4px; text-decoration: none; background: var(--sheet); }
+  .btn:hover { background: var(--blue-tint); }
+
+  footer { margin-top: 96px; padding-bottom: 48px; font-size: 0.9rem; color: var(--graphite); }
+  footer .wrap > ul { border-top: 1px solid var(--rule); padding-top: 24px; }
+  footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 24px; }
 
   @media (max-width: 860px) {
-    .cards { grid-template-columns: repeat(2, 1fr); }
-    .figs.c4 { grid-template-columns: repeat(2, 1fr); }
-    .figs.c3 { grid-template-columns: repeat(2, 1fr); }
+    .intro { grid-template-columns: 1fr; }
+    .projects ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .titleblock > div { border-left: 0; border-top: 1px solid var(--rule); }
+    .titleblock > div:nth-child(-n + 2) { border-top: 0; }
+    .titleblock > div:nth-child(2) { border-left: 1px solid var(--rule); }
+    .titleblock > div:nth-child(3) { grid-column: 1 / -1; }
+    .titleblock > div:nth-child(4) { grid-column: 1 / -1; }
     .video-row { grid-template-columns: 1fr; }
+    .pairs, .routes { grid-template-columns: 1fr; }
   }
-  @media (max-width: 560px) {
-    .stats { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px) {
     body { font-size: 16px; }
-    header.top { padding-top: 48px; }
-    .figs.c2, .figs.hero { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .yts { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .stat .num { font-size: 22px; }
-    .lead { font-size: 17px; }
+    .wrap { padding: 0 16px; }
+    .masthead { padding-top: 40px; }
+    .sheet .band { padding: 16px 14px 10px; }
+    .projects ul { grid-template-columns: 1fr; gap: 10px; }
+    .projects a { display: grid; grid-template-columns: 96px minmax(0, 1fr); grid-template-rows: 1fr auto auto 1fr; }
+    .thumb { grid-row: 1 / -1; aspect-ratio: auto; height: 96px; border-bottom: 0; border-right: 1px solid var(--rule); }
+    .projects .t { grid-column: 2; grid-row: 2; padding: 0 12px; }
+    .projects .s { grid-column: 2; grid-row: 3; padding: 2px 12px 0; }
+    .titleblock-mini { font-size: 0.72rem; }
+    .titleblock-mini span { padding: 5px 10px; }
+    .project { padding-top: 64px; }
+    .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .results > div { border-left: 0; border-top: 1px solid var(--rule); }
+    .results > div:nth-child(-n + 2) { border-top: 0; }
+    .results > div:nth-child(even) { border-left: 1px solid var(--rule); }
+    .results[style*="--n: 3"] > div:last-child { grid-column: 1 / -1; border-left: 0; }
+    .results dd { font-size: 1.45rem; }
+    .grid { gap: 10px; }
+    .g3 { gap: 8px; }
+    .stack table, .stack tbody, .stack tr, .stack td { display: block; min-width: 0; }
+    .stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .stack tr { padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+    .stack tr:last-child { border-bottom: 0; }
+    .stack td, .stack td.n { border: 0; padding: 2px 0; text-align: left; white-space: normal; }
+    .stack td:first-child { font-weight: 600; }
+    .stack td[data-label]::before { content: attr(data-label) ": "; color: var(--graphite); font-size: 0.84rem; }
+    .curves .g2 { grid-template-columns: 1fr; }
+    .schem-wrap { padding: 14px 12px 6px; }
+    .schem { display: none; }
+    .schem.narrow { display: block; }
+    .schem.narrow text { font-size: 13px; }
+    .videos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .yt .play { width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+    .yt .play::before { left: 15px; top: 11px; border-left-width: 13px; border-top-width: 9px; border-bottom-width: 9px; }
+    h3 { margin-top: 40px; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .card { transition: none; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header class="top">
-    <h1 class="name">Zhang Mingchang</h1>
-    <p class="tagline">Mechanical design, robotics software and machine vision</p>
-    <div class="links">
-      <a href="https://github.com/ELARA-sys">GitHub</a>
-      <a href="assets/Zhang_Mingchang_Rocket_Portfolio.pdf">Rocket portfolio (PDF)</a>
+<header class="masthead wrap">
+  <div class="intro">
+    <div>
+      <h1>Zhang Mingchang</h1>
+      <p class="tagline">Mechanical design, robotics software and machine vision</p>
+      <ul class="contact">
+        <li><a href="mailto:zhangmingchang@u.nus.edu">zhangmingchang@u.nus.edu</a></li>
+        <li><a href="https://github.com/ELARA-sys">github.com/ELARA-sys</a></li>
+        <li><a href="assets/Zhang_Mingchang_Rocket_Portfolio.pdf">Rocket portfolio (PDF)</a></li>
+      </ul>
     </div>
-    <p class="about">I studied Measurement and Control Technology and Instrumentation at Hebei University of Science and Technology, where my best work outside class was designing and building the hardware of a solid-fuel rocket. I then trained in software at NUS-ISS, where I have completed the coursework of the Graduate Diploma in Systems Analysis (graduating January 2027). I am now bringing the two together in robotics.</p>
-  </header>
+    <p class="about">As an undergraduate at Hebei University of Science and Technology, I designed and built the body of a solid-fuel rocket that could come back safely, but once it left the launch rail it could not sense or decide anything. Since then I have trained in software at NUS-ISS, where I have completed the coursework of the Graduate Diploma in Systems Analysis (graduating January 2027), and taught myself ROS 2. Now I want to build robots that have both: a well-made body and the software to use it.</p>
+  </div>
 
-  <nav class="cards" aria-label="Projects">
-    <a class="card" href="#rocket">
-      <div class="thumb"><img src="assets/rocket-landed-parachute.jpg" alt="Rocket lying on the ground after landing under its parachute"></div>
-      <div class="body"><h3>Solid-fuel rocket</h3><p>Hardware design and fabrication, 2020–2022</p></div>
-    </a>
-    <a class="card" href="#ros">
-      <div class="thumb"><img src="assets/ros-patrol-poster.jpg" alt="Overhead view of a simulated TurtleBot3 patrolling between waypoints"></div>
-      <div class="body"><h3>ROS 2 waypoint patrol</h3><p>SLAM and Nav2 in simulation, 2026</p></div>
-    </a>
-    <a class="card" href="#weld">
-      <div class="thumb contain"><div style="height:100%;display:grid;place-items:center;background:#16202e;color:#fff;font-weight:600;font-size:15px;text-align:center;padding:12px;line-height:1.35">X-ray weld<br>crack detection<br><span style="font-weight:400;opacity:.75;font-size:13px">YOLOv5 · OpenCV</span></div></div>
-      <div class="body"><h3>Weld crack detection</h3><p>Machine vision, final-year thesis, 2024</p></div>
-    </a>
-    <a class="card" href="#loomytrip">
-      <div class="thumb contain"><div style="height:100%;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:600;font-size:15px;text-align:center;padding:12px;line-height:1.35">Route ordering<br>and model evaluation<br><span style="font-weight:400;opacity:.8;font-size:13px">2-opt · precision / recall / F1</span></div></div>
-      <div class="body"><h3>LoomyTrip</h3><p>NUS-ISS team capstone, 2026</p></div>
-    </a>
+  <figure class="sheet">
+    <svg class="band" viewBox="0 0 100000 25283" role="img" aria-labelledby="band-title"><title id="band-title">Side view of 2021 test rocket 9 from the CAD drawing, dimensions in millimetres</title><defs><style>.dx1 {stroke: #1f4e99; stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-opacity: 1.000; fill: none; fill-opacity: 1.000;}</style><style>.dx2 {stroke: none; stroke-width: none; stroke-opacity: 1.000; fill: #1f4e99; fill-opacity: 1.000;}</style></defs><g stroke-linecap="round" stroke-linejoin="round" fill-rule="evenodd"><path d="M 12094 13322 l 54800 0" class="dx1" /><path d="M 15094 4308 l 51800 -0" class="dx1" /><path d="M 15514 4454 l 6918 -0" class="dx1" /><path d="M 48063 13322 l -35969 0" class="dx1" /><path d="M 11463 13322 l 0 180" class="dx1" /><path d="M 48063 13322 l -1226 1379" class="dx1" /><path d="M 46837 14702 l -9321 901" class="dx1" /><path d="M 37516 15603 l -10006 9258" class="dx1" /><path d="M 27509 24861 l -2704 -811" class="dx1" /><path d="M 24805 24050 l -2164 -8474" class="dx1" /><path d="M 22642 15576 l -3426 -270" class="dx1" /><path d="M 13627 18551 l -1172 -4057" class="dx1" /><path d="M 12455 14494 l -270 -153" class="dx1" /><path d="M 12184 14341 l -721 -838" class="dx1" /><path d="M 19216 15306 l -3065 4057" class="dx1" /><path d="M 16151 19362 l -2524 -811" class="dx1" /><path d="M 47432 13322 l -35338 0" class="dx1" /><path d="M 47432 13322 l -343 631" class="dx1" /><path d="M 47089 13953 l -9934 1163" class="dx1" /><path d="M 37155 15116 l -14333 9" class="dx1" /><path d="M 22822 15125 l -9826 -901" class="dx1" /><path d="M 12996 14224 l -451 -90" class="dx1" /><path d="M 12545 14134 l -361 -451" class="dx1" /><path d="M 12184 13683 l -90 -361" class="dx1" /><path d="M 15094 6928 l -14675 0" class="dx1" /><path d="M 15094 10702 l -14675 0" class="dx1" /><path d="M 15514 4308 l 0 9015" class="dx1" /><path d="M 15933 8815 l 0 4361" class="dx1" /><path d="M 16352 4454 l 0 8721" class="dx1" /><path d="M 15933 8815 l 0 -4361" class="dx1" /><path d="M 15514 13176 l 6918 0" class="dx1" /><path d="M 15514 13176 l 247 0" class="dx1" /><path d="M 15094 11726 l 839 0" class="dx1" /><path d="M 15933 11726 l 0 839" class="dx1" /><path d="M 15933 12564 l -839 0" class="dx1" /><path d="M 15094 13322 l 0 -9015" class="dx1" /><path d="M 22642 15576 l 0 -2254" class="dx1" /><path d="M 23690 4454 l 0 8721" class="dx1" /><path d="M 22851 4308 l 0 9015" class="dx1" /><path d="M 22432 4308 l 0 9015" class="dx1" /><path d="M 21593 4454 l 0 8721" class="dx1" /><path d="M 38994 4308 l 0 9015" class="dx1" /><path d="M 39413 4454 l 0 8721" class="dx1" /><path d="M 38155 10702 l 0 2474" class="dx1" /><path d="M 23899 6928 l 0 3774" class="dx1" /><path d="M 38574 6928 l -14675 0" class="dx1" /><path d="M 38574 10702 l -14675 0" class="dx1" /><path d="M 52411 8605 l -10901 0" class="dx1" /><path d="M 52411 9024 l -10901 0" class="dx1" /><path d="M 38574 13322 l 0 -9015" class="dx1" /><path d="M 52411 4454 l -0 8721" class="dx1" /><path d="M 41509 4454 l -0 8721" class="dx1" /><path d="M 38155 6928 l 0 -2474" class="dx1" /><path d="M 41090 4454 l -0 8721" class="dx1" /><path d="M 419 6928 l 0 3774" class="dx1" /><path d="M 15514 13322 l 6918 0" class="dx1" /><path d="M 22851 13176 l 15723 -0" class="dx1" /><path d="M 22851 4454 l 15723 0" class="dx1" /><path d="M 38994 4454 l 27901 -0" class="dx1" /><path d="M 38994 13176 l 27901 0" class="dx1" /><path d="M 15514 4308 l 6918 0" class="dx1" /><path d="M 15514 4454 l 6918 0" class="dx1" /><path d="M 38574 4177 l 0 -3236" class="dx1" /><path d="M 22851 4177 l 0 -3236" class="dx1" /><path d="M 38050 1203 l -14675 0" class="dx1" /><path d="M 38050 1115 l 0 175 524 -87 Z" class="dx2" /><path d="M 23375 1115 l 0 175 -524 -87 Z" class="dx2" /><path d="M 30340 540 l 0 -62 l 339 0 l 0 50 q -50 53 -99 142 q -49 88 -76 182 q -19 66 -25 144 l -66 0 q 1 -62 24 -149 q 23 -88 67 -169 q 43 -81 92 -137 l -257 0 Z M 30743 858 l 68 -6 q 8 49 35 74 q 27 25 66 25 q 46 0 79 -35 q 32 -35 32 -93 q 0 -55 -31 -87 q -31 -32 -81 -32 q -31 0 -56 14 q -25 14 -39 37 l -60 -8 l 51 -269 l 261 0 l 0 61 l -209 0 l -28 141 q 47 -33 99 -33 q 69 0 116 48 q 47 48 47 122 q 0 71 -41 123 q -50 64 -138 64 q -72 0 -117 -40 q -45 -40 -52 -106 Z" class="dx2" /><path d="M 22432 4177 l 0 -3236" class="dx1" /><path d="M 15514 4177 l 0 -3236" class="dx1" /><path d="M 21908 1203 l -5870 0" class="dx1" /><path d="M 21908 1115 l 0 175 524 -87 Z" class="dx2" /><path d="M 16038 1115 l 0 175 -524 -87 Z" class="dx2" /><path d="M 18596 855 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z M 19003 855 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z" class="dx2" /><path d="M 74683 3050 l -131 0" class="dx1" /><path d="M 21593 8946 l 0 131" class="dx1" /><path d="M 16352 8946 l 0 131" class="dx1" /><path d="M 21069 8815 l -4193 0" class="dx1" /><path d="M 21069 8728 l 0 175 524 -87 Z" class="dx2" /><path d="M 16876 8728 l 0 175 -524 -87 Z" class="dx2" /><path d="M 18934 8544 l 0 62 l -346 0 q -1 -23 8 -45 q 13 -35 42 -70 q 29 -34 84 -79 q 85 -70 115 -111 q 30 -41 30 -77 q 0 -38 -27 -65 q -27 -26 -71 -26 q -46 0 -74 28 q -28 28 -28 77 l -66 -7 q 7 -74 51 -113 q 44 -39 119 -39 q 75 0 119 42 q 44 42 44 104 q 0 31 -13 62 q -13 30 -43 64 q -30 34 -99 92 q -58 49 -74 66 q -16 17 -27 35 l 257 0 Z M 19003 8469 l 68 -6 q 8 49 35 74 q 27 25 66 25 q 46 0 79 -35 q 32 -35 32 -93 q 0 -55 -31 -87 q -31 -32 -81 -32 q -31 0 -56 14 q -25 14 -39 37 l -60 -8 l 51 -269 l 261 0 l 0 61 l -209 0 l -28 141 q 47 -33 99 -33 q 69 0 116 48 q 47 48 47 122 q 0 71 -41 123 q -50 64 -138 64 q -72 0 -117 -40 q -45 -40 -52 -106 Z" class="dx2" /><path d="M 15094 10769 l 0 957" class="dx1" /><path d="M 15094 10769 l -3631 0" class="dx1" /><path d="M 11463 10769 l 0 2734" class="dx1" /><path d="M 66401 12986 l 0 -8341" class="dx1" /><path d="M 75820 3193 c -762 -96 -1530 -139 -2298 -131" class="dx1" /><path d="M 78173 3418 c -782 -99 -1567 -174 -2353 -225" class="dx1" /><path d="M 80519 3714 c -778 -127 -1560 -226 -2345 -297" class="dx1" /><path d="M 82871 4072 c -782 -133 -1566 -253 -2352 -358" class="dx1" /><path d="M 85269 4491 c -797 -151 -1597 -291 -2399 -419" class="dx1" /><path d="M 85269 4491 c 774 159 1549 314 2326 463" class="dx1" /><path d="M 87595 4954 c 770 185 1543 356 2319 514" class="dx1" /><path d="M 92272 6033 c -785 -191 -1571 -379 -2358 -565" class="dx1" /><path d="M 94598 6714 c -772 -239 -1547 -466 -2326 -681" class="dx1" /><path d="M 96925 7472 c -770 -272 -1546 -524 -2327 -758" class="dx1" /><path d="M 99079 8413 c -702 -349 -1420 -664 -2154 -941" class="dx1" /><path d="M 99581 8815 c -153 -151 -321 -285 -502 -402" class="dx1" /><path d="M 73522 3062 c -710 0 -1418 87 -2107 259" class="dx1" /><path d="M 71416 3321 c -643 109 -1283 239 -1917 392" class="dx1" /><path d="M 69499 3714 c -636 167 -1269 341 -1901 524" class="dx1" /><path d="M 67598 4237 c -408 108 -808 244 -1197 407" class="dx1" /><path d="M 73522 3062 l 0 11505" class="dx1" /><path d="M 73522 14568 c 768 9 1536 -35 2298 -131" class="dx1" /><path d="M 75820 14437 c 786 -51 1571 -126 2353 -225" class="dx1" /><path d="M 78173 14212 c 785 -71 1567 -170 2345 -297" class="dx1" /><path d="M 80519 13916 c 786 -105 1570 -224 2352 -358" class="dx1" /><path d="M 82871 13558 c 802 -128 1601 -268 2399 -419" class="dx1" /><path d="M 87595 12676 c -776 150 -1551 304 -2326 463" class="dx1" /><path d="M 89914 12161 c -776 158 -1549 329 -2319 514" class="dx1" /><path d="M 89914 12161 c 786 -186 1572 -374 2358 -565" class="dx1" /><path d="M 92272 11597 c 779 -215 1554 -442 2326 -681" class="dx1" /><path d="M 94598 10916 c 782 -234 1558 -487 2327 -758" class="dx1" /><path d="M 96925 10158 c 733 -277 1452 -592 2154 -941" class="dx1" /><path d="M 99079 9217 c 181 -116 349 -251 502 -402" class="dx1" /><path d="M 71416 14309 c 689 172 1397 258 2107 259" class="dx1" /><path d="M 69499 13916 c 634 153 1274 284 1917 392" class="dx1" /><path d="M 67598 13392 c 631 182 1265 357 1901 524" class="dx1" /><path d="M 66401 12986 c 389 163 789 299 1197 407" class="dx1" /><path d="M 66894 4454 l 0 -147" class="dx1" /><path d="M 66894 13176 l 0 147" class="dx1" /><path d="M 52830 4454 l -0 8721" class="dx1" /><path d="M 63312 4454 l 0 8721" class="dx1" /><path d="M 63732 4454 l -0 8721" class="dx1" /><path d="M 63732 8815 l 2669 0" class="dx1" /><path d="M 99581 8684 l 0 -7743" class="dx1" /><path d="M 73522 8684 l 0 -7743" class="dx1" /><path d="M 99057 1203 l -25010 0" class="dx1" /><path d="M 99057 1115 l 0 175 524 -87 Z" class="dx2" /><path d="M 74046 1115 l 0 175 -524 -87 Z" class="dx2" /><path d="M 85908 947 l -64 0 l 0 -410 q -23 22 -61 44 q -38 22 -68 33 l 0 -62 q 54 -25 94 -61 q 40 -36 57 -70 l 41 0 l 0 526 Z M 86411 885 l 0 62 l -346 0 q -1 -23 8 -45 q 13 -35 42 -70 q 29 -34 84 -79 q 85 -70 115 -111 q 30 -41 30 -77 q 0 -38 -27 -65 q -27 -26 -71 -26 q -46 0 -74 28 q -28 28 -28 77 l -66 -7 q 7 -74 51 -113 q 44 -39 119 -39 q 75 0 119 42 q 44 42 44 104 q 0 31 -13 62 q -13 30 -43 64 q -30 34 -99 92 q -58 49 -74 66 q -16 17 -27 35 l 257 0 Z M 86686 947 l 0 -125 l -227 0 l 0 -59 l 239 -340 l 53 0 l 0 340 l 71 0 l 0 59 l -71 0 l 0 125 l -64 0 m 0 -184 l 0 -236 l -164 236 l 164 0 Z M 86922 947 l 0 -73 l 73 0 l 0 73 q 0 40 -14 65 q -14 25 -45 38 l -18 -28 q 20 -9 30 -26 q 10 -17 11 -50 l -36 0 Z M 87091 808 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z" class="dx2" /><path d="M 66401 8684 l 0 -131" class="dx1" /><path d="M 73522 8684 l 0 -131" class="dx1" /><path d="M 66925 8815 l 6073 0" class="dx1" /><path d="M 66925 8728 l 0 175 -524 -87 Z" class="dx2" /><path d="M 72998 8728 l 0 175 524 -87 Z" class="dx2" /><path d="M 69076 8420 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z M 69483 8420 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z M 69925 8559 l 0 -73 l 73 0 l 0 73 q 0 40 -14 65 q -14 25 -45 38 l -18 -28 q 20 -9 30 -26 q 10 -17 11 -50 l -36 0 Z M 70103 8438 l 62 -6 q 8 44 30 63 q 22 20 57 20 q 30 0 52 -14 q 22 -14 37 -36 q 14 -23 24 -61 q 10 -39 10 -79 q 0 -4 -0 -13 q -19 31 -53 50 q -33 19 -72 19 q -65 0 -110 -47 q -45 -47 -45 -124 q 0 -80 47 -128 q 47 -49 118 -49 q 51 0 93 28 q 42 28 64 78 q 22 51 22 147 q 0 100 -22 160 q -22 60 -65 91 q -43 31 -101 31 q -61 0 -100 -34 q -39 -34 -47 -96 m 263 -231 q 0 -55 -29 -88 q -29 -33 -71 -33 q -43 0 -75 35 q -32 35 -32 91 q 0 50 30 81 q 30 31 75 31 q 45 0 73 -31 q 29 -31 29 -87 Z M 70505 8103 l 0 -62 l 339 0 l 0 50 q -50 53 -99 142 q -49 88 -76 182 q -19 66 -25 144 l -66 0 q 1 -62 24 -149 q 23 -88 67 -169 q 43 -81 92 -137 l -257 0 Z" class="dx2" /><path d="M 66401 8946 l 0 131" class="dx1" /><path d="M 63732 8946 l 0 131" class="dx1" /><path d="M 65877 8815 l -1621 0" class="dx1" /><path d="M 65877 8728 l 0 175 524 -87 Z" class="dx2" /><path d="M 64256 8728 l 0 175 -524 -87 Z" class="dx2" /><path d="M 64423 8559 l -64 0 l 0 -410 q -23 22 -61 44 q -38 22 -68 33 l 0 -62 q 54 -25 94 -61 q 40 -36 57 -70 l 41 0 l 0 526 Z M 64926 8497 l 0 62 l -346 0 q -1 -23 8 -45 q 13 -35 42 -70 q 29 -34 84 -79 q 85 -70 115 -111 q 30 -41 30 -77 q 0 -38 -27 -65 q -27 -26 -71 -26 q -46 0 -74 28 q -28 28 -28 77 l -66 -7 q 7 -74 51 -113 q 44 -39 119 -39 q 75 0 119 42 q 44 42 44 104 q 0 31 -13 62 q -13 30 -43 64 q -30 34 -99 92 q -58 49 -74 66 q -16 17 -27 35 l 257 0 Z M 65030 8559 l 0 -73 l 73 0 l 0 73 q 0 40 -14 65 q -14 25 -45 38 l -18 -28 q 20 -9 30 -26 q 10 -17 11 -50 l -36 0 Z M 65203 8103 l 0 -62 l 339 0 l 0 50 q -50 53 -99 142 q -49 88 -76 182 q -19 66 -25 144 l -66 0 q 1 -62 24 -149 q 23 -88 67 -169 q 43 -81 92 -137 l -257 0 Z M 65606 8420 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z" class="dx2" /><path d="M 73391 3062 l -131 0" class="dx1" /><path d="M 73391 14568 l -131 0" class="dx1" /><path d="M 73522 3586 l 0 10457" class="dx1" /><path d="M 73610 3586 l -175 0 87 -524 Z" class="dx2" /><path d="M 73610 14044 l -175 0 87 524 Z" class="dx2" /><path d="M 73916 7929 l 6 68 q -49 8 -74 35 q -25 27 -25 66 q 0 46 35 79 q 35 32 93 32 q 55 0 87 -31 q 32 -31 32 -81 q 0 -31 -14 -56 q -14 -25 -37 -39 l 8 -60 l 269 51 l 0 261 l -61 0 l 0 -209 l -141 -28 q 33 47 33 99 q 0 69 -48 116 q -48 47 -122 47 q -71 0 -123 -41 q -64 -50 -64 -138 q 0 -72 40 -117 q 40 -45 106 -52 Z M 73778 8543 l 125 0 l 0 -227 l 59 0 l 340 239 l 0 53 l -340 0 l 0 71 l -59 0 l 0 -71 l -125 0 l 0 -64 m 184 0 l 236 0 l -236 -164 l 0 164 Z M 73778 8778 l 73 0 l 0 73 l -73 0 q -40 0 -65 -14 q -25 -14 -38 -45 l 28 -18 q 9 20 26 30 q 17 10 50 11 l 0 -36 Z M 74063 9046 q 15 -40 42 -59 q 27 -19 65 -19 q 57 0 96 41 q 39 41 39 109 q 0 69 -40 110 q -40 42 -97 42 q -36 0 -63 -19 q -27 -19 -42 -58 q -16 48 -51 73 q -35 25 -84 25 q -67 0 -113 -48 q -46 -48 -46 -125 q 0 -78 46 -125 q 46 -48 115 -48 q 51 0 86 26 q 34 26 47 74 m 109 -13 q -37 0 -61 24 q -24 24 -24 62 q 0 37 23 61 q 23 24 57 24 q 35 0 60 -24 q 24 -24 24 -61 q 0 -37 -24 -61 q -24 -24 -56 -24 m -242 -21 q -28 0 -53 13 q -26 13 -40 39 q -14 26 -14 55 q 0 46 30 76 q 30 30 75 30 q 46 0 77 -31 q 30 -31 30 -77 q 0 -45 -30 -75 q -30 -30 -75 -30 Z M 74063 9453 q 15 -40 42 -59 q 27 -19 65 -19 q 57 0 96 41 q 39 41 39 109 q 0 69 -40 110 q -40 42 -97 42 q -36 0 -63 -19 q -27 -19 -42 -58 q -16 48 -51 73 q -35 25 -84 25 q -67 0 -113 -48 q -46 -48 -46 -125 q 0 -78 46 -125 q 46 -48 115 -48 q 51 0 86 26 q 34 26 47 74 m 109 -13 q -37 0 -61 24 q -24 24 -24 62 q 0 37 23 61 q 23 24 57 24 q 35 0 60 -24 q 24 -24 24 -61 q 0 -37 -24 -61 q -24 -24 -56 -24 m -242 -21 q -28 0 -53 13 q -26 13 -40 39 q -14 26 -14 55 q 0 46 30 76 q 30 30 75 30 q 46 0 77 -31 q 30 -31 30 -77 q 0 -45 -30 -75 q -30 -30 -75 -30 Z" class="dx2" /><path d="M 66894 4177 l 0 -3236" class="dx1" /><path d="M 38994 4177 l 0 -3236" class="dx1" /><path d="M 66370 1203 l -26853 0" class="dx1" /><path d="M 66370 1115 l 0 175 524 -87 Z" class="dx2" /><path d="M 39518 1115 l 0 175 -524 -87 Z" class="dx2" /><path d="M 52097 947 l -64 0 l 0 -410 q -23 22 -61 44 q -38 22 -68 33 l 0 -62 q 54 -25 94 -61 q 40 -36 57 -70 l 41 0 l 0 526 Z M 52262 808 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z M 52670 808 l 64 -9 q 11 55 38 79 q 27 24 65 24 q 45 0 77 -31 q 31 -31 31 -78 q 0 -44 -29 -73 q -29 -29 -74 -29 q -18 0 -45 7 l 7 -56 q 6 1 10 1 q 41 0 74 -21 q 33 -21 33 -66 q 0 -35 -24 -59 q -24 -23 -62 -23 q -38 0 -63 24 q -25 24 -32 71 l -64 -11 q 12 -65 54 -100 q 42 -36 104 -36 q 43 0 79 18 q 36 18 55 50 q 19 32 19 68 q 0 34 -18 62 q -18 28 -54 44 q 46 11 72 45 q 26 34 26 85 q 0 69 -50 116 q -50 48 -127 48 q -69 0 -115 -41 q -46 -41 -52 -107 Z M 53111 947 l 0 -73 l 73 0 l 0 73 q 0 40 -14 65 q -14 25 -45 38 l -18 -28 q 20 -9 30 -26 q 10 -17 11 -50 l -36 0 Z M 53280 688 q 0 -93 19 -150 q 19 -57 57 -87 q 38 -31 95 -31 q 42 0 74 17 q 32 17 53 49 q 21 32 33 78 q 12 46 12 124 q 0 92 -19 149 q -19 57 -57 88 q -38 31 -95 31 q -76 0 -119 -54 q -52 -65 -52 -213 m 66 0 q 0 129 30 172 q 30 43 75 43 q 44 0 75 -43 q 30 -43 30 -172 q 0 -129 -30 -172 q -30 -43 -75 -43 q -44 0 -71 38 q -33 48 -33 177 Z M 53697 825 l 62 -6 q 8 44 30 63 q 22 20 57 20 q 30 0 52 -14 q 22 -14 37 -36 q 14 -23 24 -61 q 10 -39 10 -79 q 0 -4 -0 -13 q -19 31 -53 50 q -33 19 -72 19 q -65 0 -110 -47 q -45 -47 -45 -124 q 0 -80 47 -128 q 47 -49 118 -49 q 51 0 93 28 q 42 28 64 78 q 22 51 22 147 q 0 100 -22 160 q -22 60 -65 91 q -43 31 -101 31 q -61 0 -100 -34 q -39 -34 -47 -96 m 263 -231 q 0 -55 -29 -88 q -29 -33 -71 -33 q -43 0 -75 35 q -32 35 -32 91 q 0 50 30 81 q 30 31 75 31 q 45 0 73 -31 q 29 -31 29 -87 Z" class="dx2" /><path d="M 63312 8684 l 0 -131" class="dx1" /><path d="M 52830 8946 l 0 131" class="dx1" /><path d="M 62788 8815 l -9434 0" class="dx1" /><path d="M 62788 8728 l 0 175 524 -87 Z" class="dx2" /><path d="M 53354 8728 l 0 175 -524 -87 Z" class="dx2" /><path d="M 57694 8469 l 68 -6 q 8 49 35 74 q 27 25 66 25 q 46 0 79 -35 q 32 -35 32 -93 q 0 -55 -31 -87 q -31 -32 -81 -32 q -31 0 -56 14 q -25 14 -39 37 l -60 -8 l 51 -269 l 261 0 l 0 61 l -209 0 l -28 141 q 47 -33 99 -33 q 69 0 116 48 q 47 48 47 122 q 0 71 -41 123 q -50 64 -138 64 q -72 0 -117 -40 q -45 -40 -52 -106 Z M 58102 8348 q 0 -93 19 -150 q 19 -57 57 -87 q 38 -31 95 -31 q 42 0 74 17 q 32 17 53 49 q 21 32 33 78 q 12 46 12 124 q 0 92 -19 149 q -19 57 -57 88 q -38 31 -95 31 q -76 0 -119 -54 q -52 -65 -52 -213 m 66 0 q 0 129 30 172 q 30 43 75 43 q 44 0 75 -43 q 30 -43 30 -172 q 0 -129 -30 -172 q -30 -43 -75 -43 q -44 0 -71 38 q -33 48 -33 177 Z" class="dx2" /><path d="M 38994 13322 l 0 419" class="dx1" /><path d="M 38994 13742 l -419 0" class="dx1" /><path d="M 38574 13742 l 0 -419" class="dx1" /><path d="M 23690 13322 l 0 419" class="dx1" /><path d="M 23690 13742 l 419 0" class="dx1" /><path d="M 24109 13742 l 0 -419" class="dx1" /></g></svg>
+    <figcaption class="titleblock-mini"><span>Test rocket 9, 2021</span><span>Side view, CAD drawing</span><span>mm</span></figcaption>
+  </figure>
+
+  <nav class="projects" aria-label="Projects">
+    <ul>
+      <li><a href="#rocket">
+        <span class="thumb"><img src="assets/rocket-card.jpg" width="480" height="360" alt=""></span>
+        <span class="t">Solid-fuel rocket</span>
+        <span class="s">Hardware design and fabrication, 2020–2022</span>
+      </a></li>
+      <li><a href="#ros">
+        <span class="thumb"><img src="assets/ros-card.jpg" width="480" height="360" alt=""></span>
+        <span class="t">ROS 2 waypoint patrol</span>
+        <span class="s">SLAM and Nav2 in simulation, 2026</span>
+      </a></li>
+      <li><a href="#weld">
+        <span class="thumb"><img src="assets/weld-card.jpg" width="480" height="360" alt=""></span>
+        <span class="t">Weld crack detection</span>
+        <span class="s">YOLOv5 on X-ray images, final-year thesis, 2024</span>
+      </a></li>
+      <li><a href="#loomytrip">
+        <span class="thumb plot"><svg class="route mini" viewBox="0 0 396 264" aria-hidden="true"><polyline points="226.2,179.5 207.5,219.7 346.2,219.7 230.3,145.0 230.5,93.2 24.0,30.0" class="leg"/><circle cx="226.2" cy="179.5" r="9" class="stop first"/><circle cx="207.5" cy="219.7" r="9" class="stop"/><circle cx="346.2" cy="219.7" r="9" class="stop"/><circle cx="230.3" cy="145.0" r="9" class="stop"/><circle cx="230.5" cy="93.2" r="9" class="stop"/><circle cx="24.0" cy="30.0" r="9" class="stop"/></svg></span>
+        <span class="t">LoomyTrip</span>
+        <span class="s">Route ordering and model evaluation, team capstone, 2026</span>
+      </a></li>
+    </ul>
   </nav>
+</header>
+
+<main class="wrap">
 
   <!-- ============ ROCKET ============ -->
-  <section class="project" id="rocket">
-    <p class="eyebrow">Project 1 · Hardware</p>
-    <h2>Solid-fuel rocket: hardware design and fabrication</h2>
-    <p class="meta">2020–2022 · Solid-fuel rocket group, Hebei University of Science and Technology aeromodelling team</p>
-    <ul class="tags"><li>OpenRocket</li><li>SolidWorks</li><li>AutoCAD / DXF</li><li>Laser cutting</li><li>Composites</li><li>3D printing</li></ul>
-
-    <p class="lead">I was mainly responsible for the rocket's hardware: the structural design, the drawings and the fabrication of the whole rocket, from the nose cone, fins and body tube to the recovery system. A teammate handled the software.</p>
-
-    <div class="figs hero">
-      <figure>
-        <div class="frame tall photo"><img src="assets/rocket-assembled.jpg" alt="Assembled solid-fuel rocket standing on a table with its parachute" loading="lazy"></div>
-        <figcaption>Assembled rocket with parachute, Nov 2020</figcaption>
-      </figure>
-      <figure>
-        <div class="frame tall"><img src="assets/rocket-cad.jpg" alt="CAD side drawing of the full rocket with dimensions" loading="lazy"></div>
-        <figcaption>CAD drawing of the 2021 test rocket (mm)</figcaption>
-      </figure>
+  <section class="project" id="rocket" aria-labelledby="rocket-title">
+    <div class="project-head">
+      <h2 id="rocket-title">Solid-fuel rocket: hardware design and fabrication</h2>
+      <p class="summary">I was mainly responsible for the rocket's hardware: the structural design, the drawings and the fabrication of the whole rocket, from the nose cone, fins and body tube to the recovery system. A teammate handled the software.</p>
+      <dl class="titleblock">
+        <div><dt>Period</dt><dd>2020–2022</dd></div>
+        <div><dt>Role</dt><dd>Mainly responsible for the hardware; led the rocket group in 2022</dd></div>
+        <div><dt>Team</dt><dd>Solid-fuel rocket group, Hebei University of Science and Technology aeromodelling team</dd></div>
+        <div><dt>Tools</dt><dd><ul class="tags"><li>OpenRocket</li><li>SolidWorks</li><li>AutoCAD / DXF</li><li>Laser cutting</li><li>Composites</li><li>3D printing</li></ul></dd></div>
+      </dl>
     </div>
 
-    <div class="stats">
-      <div class="stat"><div class="num">50+</div><div class="lbl">test and practice launches</div></div>
-      <div class="stat"><div class="num">≈ 9 / 10</div><div class="lbl">parachute openings after my recovery redesign</div></div>
-      <div class="stat"><div class="num">4th</div><div class="lbl">national, team event, CADC 2021</div></div>
-      <div class="stat"><div class="num">38 m</div><div class="lbl">first test flight against a 40 m target (as group leader)</div></div>
-    </div>
+    <figure class="fig">
+      <div class="grid g3">
+        <div class="frame r34"><img src="assets/rocket-assembled.jpg" width="900" height="1200" alt="Assembled rocket with yellow truss fins standing on a table, its parachute folded in front"></div>
+        <div class="frame r34"><img src="assets/rocket-cadc-launch.jpg" width="490" height="654" alt="Smoke trail of the rocket climbing into a blue sky above a line of trees" loading="lazy"></div>
+        <div class="frame r34"><img src="assets/rocket-landed-parachute.jpg" width="490" height="654" alt="Rocket lying on the ground with its blue parachute spread out beside it" loading="lazy"></div>
+      </div>
+      <figcaption>Left: assembled rocket with its parachute, Nov 2020. Middle: launch at the CADC 2021 national final in Fuxin. Right: landed under its parachute after a test flight, Jul 2021.</figcaption>
+    </figure>
+
+    <dl class="results">
+      <div><dt>test and practice launches</dt><dd>50+</dd></div>
+      <div><dt>parachute openings after my recovery redesign</dt><dd>≈ 9 in 10</dd></div>
+      <div><dt>national, CADC 2021 team event</dt><dd>4th</dd></div>
+      <div><dt>first test flight against a 40 m target, as group leader</dt><dd>38 m</dd></div>
+    </dl>
 
     <div class="prose">
-      <h3 class="sub">How I designed and built it</h3>
+        <h3>What I did</h3>
       <ul>
-        <li>Worked out the overall layout in OpenRocket, checking the positions of the centre of mass and centre of pressure for stability, then modelled the details in SolidWorks.</li>
+        <li>Worked out the overall layout in OpenRocket, checking the centre of mass and the centre of pressure for stability, then modelled the details in SolidWorks.</li>
         <li>Drew the parts in CAD, exported them as DXF files and cut them on a laser cutter: balsa and plywood ribs, fins and bulkheads.</li>
-        <li>Built the airframe with carbon rods, carbon-fibre reinforcement, a fibreglass-and-resin body tube and some 3D-printed parts.</li>
+        <li>Built the airframe from carbon rods, carbon-fibre reinforcement, a fibreglass-and-resin body tube and 3D-printed parts.</li>
+        <li>Redesigned the parachute recovery system, which became my main contribution (below).</li>
+        <li>As group leader in 2022, redesigned the internal structure for a new target-altitude event.</li>
       </ul>
     </div>
 
-    <h3 class="sub">Recovery system: from side hatch to piston ejection</h3>
+    <h3>Recovery system: from side hatch to piston ejection</h3>
     <div class="prose">
-      <p>This was my main contribution. The old design released the parachute through a side hatch and opened only about one time in two, because the canopy caught on the rocket body. I replaced the hatch with a piston: gas from a small ejection charge pushes the nose cone and the parachute out of the tube together, so the canopy has nothing to snag on. I found the charge size by testing, proved the design with a ground test, and the team adopted it. None of the ten cohorts before us had tried this structure, and the teams after us kept using it.</p>
+      <p>The old design released the parachute through a side hatch and opened only about one time in two, because the canopy caught on the rocket body. I replaced the hatch with a piston: gas from a small ejection charge pushes the nose cone and the parachute out of the tube together, so the canopy has nothing to snag on. I found the charge size by testing and proved the design with a ground test, and the team adopted it. None of the ten cohorts before us had tried this structure, and the teams after us kept using it.</p>
     </div>
-    <div class="figs c3">
-      <figure>
-        <div class="frame fixed"><img src="assets/rocket-side-hatch.jpg" alt="Close-up of the side hatch on an earlier body tube" loading="lazy"></div>
-        <figcaption><strong>Before:</strong> side hatch on the earlier body tube, Nov 2020</figcaption>
-      </figure>
-      <figure>
-        <div class="frame fixed"><img src="assets/rocket-landed-parachute.jpg" alt="Rocket on the ground with its parachute deployed after a test flight" loading="lazy"></div>
-        <figcaption><strong>After:</strong> landed under its parachute, test flight, Jul 2021</figcaption>
-      </figure>
-      <figure>
-        <div class="frame fixed"><img src="assets/rocket-cadc-launch.jpg" alt="Smoke trail of a rocket climbing into a blue sky" loading="lazy"></div>
-        <figcaption>Launch at the CADC 2021 national final, Fuxin. Our team placed 4th in the multi-stage model rocket launch and payload recovery team event.</figcaption>
-      </figure>
-    </div>
+    <figure class="fig">
+      <div class="schem-wrap">
+        <svg class="schem" viewBox="0 0 660 238" role="img" aria-labelledby="schem-title">
+          <title id="schem-title">Piston ejection. Packed: ejection charge, piston, parachute and nose cone in a line inside the body tube. After the charge fires, gas pushes the piston forward, and the parachute and nose cone leave the tube together.</title>
+          <text x="10" y="16" class="rowlabel">Packed for launch</text>
+          <rect x="10" y="44" width="320" height="40" rx="2" class="tube"/>
+          <rect x="14" y="48" width="34" height="32" class="charge"/>
+          <rect x="52" y="45" width="12" height="38" class="piston"/>
+          <rect x="70" y="51" width="210" height="26" rx="13" class="chute"/>
+          <path d="M110 51v26M150 51v26M190 51v26M230 51v26" class="fold"/>
+          <rect x="290" y="47" width="40" height="34" class="cone"/>
+          <path d="M330 44C392 44 438 54 462 64C438 74 392 84 330 84Z" class="cone"/>
+          <path d="M58 44v-8M31 84v10M175 77v17M400 80v14" class="tick"/>
+          <text x="58" y="32" text-anchor="middle">Piston</text>
+          <text x="10" y="108">Ejection charge</text>
+          <text x="175" y="108" text-anchor="middle">Parachute</text>
+          <text x="400" y="108" text-anchor="middle">Nose cone</text>
 
-    <h3 class="sub">From drawing to part</h3>
-    <p class="prose">Each pair shows a cutting drawing and the part made from it.</p>
-    <div class="figs c4">
+          <text x="10" y="140" class="rowlabel">After the charge fires</text>
+          <rect x="10" y="166" width="320" height="40" rx="2" class="tube"/>
+          <rect x="14" y="170" width="34" height="32" class="spent"/>
+          <rect x="50" y="170" width="266" height="32" class="gas"/>
+          <rect x="316" y="167" width="12" height="38" class="piston"/>
+          <rect x="342" y="173" width="110" height="26" rx="13" class="chute"/>
+          <path d="M378 173v26M414 173v26" class="fold"/>
+          <rect x="464" y="169" width="40" height="34" class="cone"/>
+          <path d="M504 166C566 166 612 176 636 186C612 196 566 206 504 206Z" class="cone"/>
+          <path d="M344 154H626" class="arrow"/>
+          <path d="M636 154l-11-5v10z" class="head"/>
+          <text x="490" y="146" text-anchor="middle" class="note">pushed out together</text>
+          <path d="M183 206v12M322 206v12M397 199v19M570 201v17" class="tick"/>
+          <text x="183" y="232" text-anchor="middle">Gas pushes the piston</text>
+          <text x="322" y="232" text-anchor="middle">Piston</text>
+          <text x="397" y="232" text-anchor="middle">Parachute</text>
+          <text x="570" y="232" text-anchor="middle">Nose cone</text>
+        </svg>
+        <svg class="schem narrow" viewBox="0 0 340 252" aria-hidden="true">
+          <text x="10" y="16" class="rowlabel">Packed for launch</text>
+          <rect x="10" y="44" width="220" height="32" rx="2" class="tube"/>
+          <rect x="13" y="47" width="24" height="26" class="charge"/>
+          <rect x="40" y="45" width="9" height="30" class="piston"/>
+          <rect x="54" y="50" width="136" height="20" rx="10" class="chute"/>
+          <path d="M88 50v20M122 50v20M156 50v20" class="fold"/>
+          <rect x="196" y="47" width="34" height="26" class="cone"/>
+          <path d="M230 44C280 44 312 53 330 60C312 67 280 76 230 76Z" class="cone"/>
+          <path d="M45 44v-6M122 50v-12M25 76v10M282 72v14" class="tick"/>
+          <text x="45" y="34" text-anchor="middle">Piston</text>
+          <text x="10" y="100">Ejection charge</text>
+          <text x="122" y="34" text-anchor="middle">Parachute</text>
+          <text x="282" y="100" text-anchor="middle">Nose cone</text>
+
+          <text x="10" y="138" class="rowlabel">After the charge fires</text>
+          <rect x="10" y="164" width="150" height="32" rx="2" class="tube"/>
+          <rect x="13" y="167" width="24" height="26" class="spent"/>
+          <rect x="39" y="167" width="110" height="26" class="gas"/>
+          <rect x="149" y="165" width="9" height="30" class="piston"/>
+          <rect x="168" y="170" width="60" height="20" rx="10" class="chute"/>
+          <rect x="236" y="167" width="26" height="26" class="cone"/>
+          <path d="M262 164C300 164 322 173 336 180C322 187 300 196 262 196Z" class="cone"/>
+          <path d="M170 152H326" class="arrow"/>
+          <path d="M336 152l-10-4.5v9z" class="head"/>
+          <text x="252" y="145" text-anchor="middle" class="note">pushed out together</text>
+          <path d="M80 196v10M154 196v30M198 190v36M300 193v13" class="tick"/>
+          <text x="80" y="220" text-anchor="middle">Gas pushes the piston</text>
+          <text x="148" y="242" text-anchor="end">Piston</text>
+          <text x="192" y="242" text-anchor="start">Parachute</text>
+          <text x="300" y="220" text-anchor="middle">Nose cone</text>
+        </svg>
+      </div>
+      <figcaption>How the piston ejection works (schematic, not to scale).</figcaption>
+    </figure>
+    <figure class="fig narrow">
+      <div class="grid g2">
+        <div class="frame r34"><img src="assets/rocket-side-hatch.jpg" width="720" height="960" alt="Close-up of the side hatch cut into an earlier body tube, with a wire running into it" loading="lazy"></div>
+        <div class="frame r34"><img src="assets/rocket-recovered.jpg" width="490" height="654" alt="Recovered rocket lying on the ground after a test flight" loading="lazy"></div>
+      </div>
+      <figcaption>Before: the side hatch on the earlier body tube, Nov 2020. After: the rocket recovered after a test flight, Jul 2021.</figcaption>
+    </figure>
+
+    <h3>From drawing to part</h3>
+    <p class="prose">Parts were drawn in CAD, exported as DXF and cut on a laser cutter. The two drawings are rendered from the original DXF files; the photos are from November 2020.</p>
+    <div class="grid g4 fig">
       <figure>
-        <div class="frame fixed contain"><img src="assets/nosecone-drawing.jpg" alt="Laser-cutting drawing of the nose cone ribs" loading="lazy"></div>
-        <figcaption>Nose cone rib set, drawing</figcaption>
+        <div class="frame draw r11"><img src="assets/drawing-nosecone.svg" width="933" height="1000" alt="Cutting drawing of the nose cone: a side view, four curved ribs and a set of rings" loading="lazy"></div>
+        <figcaption>Nose cone rib set, cutting drawing</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed"><img src="assets/nosecone-ribs.jpg" alt="Laser-cut wooden nose cone rib frame" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/nosecone-ribs.jpg" width="720" height="720" alt="Laser-cut wooden nose cone frame of curved ribs and rings" loading="lazy"></div>
         <figcaption>Nose cone ribs before skinning</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed contain"><img src="assets/fin-drawing.jpg" alt="Cutting drawing of a balsa fin truss" loading="lazy"></div>
-        <figcaption>Fin truss, drawing</figcaption>
+        <div class="frame draw r11"><img src="assets/drawing-fin.svg" width="982" height="1000" alt="Cutting drawing of a fin: the outline and the truss frame" loading="lazy"></div>
+        <figcaption>Fin outline and truss, cutting drawing</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed"><img src="assets/fin-frame.jpg" alt="Laser-cut balsa fin truss frame" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/fin-frame.jpg" width="720" height="720" alt="Laser-cut balsa fin truss frame on a white table" loading="lazy"></div>
         <figcaption>Balsa fin frame</figcaption>
       </figure>
-    </div>
-    <div class="figs c4">
       <figure>
-        <div class="frame fixed"><img src="assets/fin-covered.jpg" alt="Fin frame after covering" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/fin-covered.jpg" width="720" height="720" alt="Fin frame covered with blue film" loading="lazy"></div>
         <figcaption>Fin frame after covering</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed"><img src="assets/body-tube.jpg" alt="Fibreglass and resin body tube" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/body-tube.jpg" width="720" height="720" alt="Translucent fibreglass and resin body tube lying on a table" loading="lazy"></div>
         <figcaption>Fibreglass-and-resin body tube</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed"><img src="assets/bulkhead.jpg" alt="Laser-cut plywood motor-mount bulkhead" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/bulkhead.jpg" width="720" height="720" alt="Round laser-cut plywood bulkhead with four circular openings" loading="lazy"></div>
         <figcaption>Laser-cut motor-mount bulkhead</figcaption>
       </figure>
       <figure>
-        <div class="frame fixed"><img src="assets/bulkhead-fitted.jpg" alt="Tube section with the bulkhead fitted" loading="lazy"></div>
-        <figcaption>Tube section with bulkhead fitted</figcaption>
+        <div class="frame r11"><img src="assets/bulkhead-fitted.jpg" width="720" height="720" alt="Body tube section standing upright with a wooden bulkhead fitted at its base" loading="lazy"></div>
+        <figcaption>Tube section with the bulkhead fitted</figcaption>
       </figure>
     </div>
 
-    <h3 class="sub">As group leader: a target-altitude event</h3>
+    <h3>As group leader: a target-altitude event</h3>
     <div class="prose">
       <p>In 2022 I led the rocket group. The event changed to target altitude, scored on how close the rocket's highest point came to 40 m. Before training began, I redesigned the rocket's internal structure and drew and built the new version myself. Its first test flight reached 38 m, and that design set the direction for the group's competition model that year.</p>
       <p>Also: Third Prize in the University Aerospace Innovation Challenge 2021 (university round), with a model rocket where I did everything except the software.</p>
     </div>
 
-    <h3 class="sub">Videos</h3>
-    <div class="yts">
-      <a class="yt" href="https://youtube.com/shorts/f59oAd91Sxc" target="_blank" rel="noopener">
-        <div class="frame"><img src="https://i.ytimg.com/vi/f59oAd91Sxc/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+    <h3>Videos</h3>
+    <div class="videos">
+      <figure>
+        <a class="yt" href="https://youtube.com/shorts/f59oAd91Sxc" data-yt="f59oAd91Sxc" aria-label="Play video: test flight, landing under the parachute">
+          <img src="assets/video-test-landing.jpg" width="360" height="640" alt="" loading="lazy"><span class="play" aria-hidden="true"></span>
+        </a>
         <figcaption>Test flight: landing under the parachute</figcaption>
-      </a>
-      <a class="yt" href="https://youtube.com/shorts/V23yIQ5HWlk" target="_blank" rel="noopener">
-        <div class="frame"><img src="https://i.ytimg.com/vi/V23yIQ5HWlk/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+      </figure>
+      <figure>
+        <a class="yt" href="https://youtube.com/shorts/V23yIQ5HWlk" data-yt="V23yIQ5HWlk" aria-label="Play video: CADC 2021 national final, launch">
+          <img src="assets/video-cadc-launch.jpg" width="360" height="640" alt="" loading="lazy"><span class="play" aria-hidden="true"></span>
+        </a>
         <figcaption>CADC 2021 national final: launch</figcaption>
-      </a>
-      <a class="yt" href="https://youtube.com/shorts/x3F7QiUBE5Y" target="_blank" rel="noopener">
-        <div class="frame"><img src="https://i.ytimg.com/vi/x3F7QiUBE5Y/hqdefault.jpg" alt="" loading="lazy"><div class="play"><span></span></div></div>
+      </figure>
+      <figure>
+        <a class="yt" href="https://youtube.com/shorts/x3F7QiUBE5Y" data-yt="x3F7QiUBE5Y" aria-label="Play video: test flight, launch to recovery">
+          <img src="assets/video-test-recovery.jpg" width="360" height="640" alt="" loading="lazy"><span class="play" aria-hidden="true"></span>
+        </a>
         <figcaption>Test flight: launch to recovery</figcaption>
-      </a>
+      </figure>
     </div>
+    <p class="small" style="margin-top: 12px">The videos are YouTube Shorts and load from YouTube when you press play.</p>
 
     <div class="actions">
       <a class="btn" href="assets/Zhang_Mingchang_Rocket_Portfolio.pdf">Full rocket portfolio (PDF, 3 pages)</a>
@@ -298,56 +497,68 @@
   </section>
 
   <!-- ============ ROS 2 ============ -->
-  <section class="project" id="ros">
-    <p class="eyebrow">Project 2 · Robotics software</p>
-    <h2>ROS 2 waypoint patrol with SLAM and Nav2</h2>
-    <p class="meta">Oct 2026 · Simulation · Learned ROS 2 from scratch in about a week</p>
-    <ul class="tags"><li>ROS 2 Jazzy</li><li>Gazebo Harmonic</li><li>SLAM Toolbox</li><li>Nav2</li><li>Python (rclpy)</li><li>RViz</li><li>WSL2</li></ul>
+  <section class="project" id="ros" aria-labelledby="ros-title">
+    <div class="project-head">
+      <h2 id="ros-title">ROS 2 waypoint patrol with SLAM and Nav2</h2>
+      <p class="summary">A TurtleBot3 in Gazebo builds a map of its arena with SLAM, then uses Nav2 to visit three waypoints one goal at a time. The patrol node skips any waypoint that fails or times out and prints a summary at the end. Simulation only.</p>
+      <dl class="titleblock">
+        <div><dt>Period</dt><dd>Oct 2026</dd></div>
+        <div><dt>Role</dt><dd>Setup, integration, testing and debugging</dd></div>
+        <div><dt>Team</dt><dd>Individual project; I learned ROS 2 from scratch in about a week</dd></div>
+        <div><dt>Tools</dt><dd><ul class="tags"><li>ROS 2 Jazzy</li><li>Gazebo Harmonic</li><li>SLAM Toolbox</li><li>Nav2</li><li>Python (rclpy)</li><li>RViz</li><li>WSL2</li></ul></dd></div>
+      </dl>
+    </div>
 
     <div class="video-row">
       <figure>
-        <video autoplay muted loop playsinline preload="metadata" poster="assets/ros-patrol-poster.jpg" aria-label="Overhead view of a simulated TurtleBot3 visiting waypoints A, B and C and driving around a box">
+        <video autoplay muted loop playsinline preload="metadata" width="480" height="552" poster="assets/ros-patrol-poster.jpg" aria-label="Overhead view of a simulated TurtleBot3 visiting waypoints A, B and C and driving around a box">
           <source src="assets/ros-patrol-demo.mp4" type="video/mp4">
-          <a href="https://github.com/ELARA-sys/turtlebot3-port-patrol">Watch the demo on GitHub</a>
+          <a href="assets/ros-patrol-demo.gif">Watch the demo as a GIF</a>
         </video>
         <figcaption>One patrol run at 12× real time. Each red ring is the 0.25 m area where Nav2 counts a goal as reached. The orange box was added after mapping, so Nav2 only sees it through the LiDAR.</figcaption>
       </figure>
       <div class="prose">
-        <p class="lead" style="margin-top:0">A TurtleBot3 in Gazebo builds a map of its arena with SLAM, then uses Nav2 to visit three waypoints one goal at a time. The patrol node skips any waypoint that fails or times out and prints a summary at the end.</p>
-        <p><strong>What I did:</strong></p>
+        <h3>What I did</h3>
         <ul>
           <li>Set up ROS 2 Jazzy, Gazebo, SLAM Toolbox and Nav2 on WSL2.</li>
-          <li>Ran the SLAM mapping, saved the map and ran Nav2 localization (AMCL) on it.</li>
-          <li>Chose the waypoints, wrote the parameter file, and built and ran the package.</li>
+          <li>Ran the SLAM mapping, saved the map and ran Nav2 localisation (AMCL) on it.</li>
+          <li>Chose the waypoints, wrote the waypoint parameter file, and built and ran the package.</li>
           <li>Designed and ran the tests below, and debugged the problems along the way.</li>
         </ul>
       </div>
     </div>
 
-    <h3 class="sub">Tests</h3>
-    <div class="table-wrap">
+    <dl class="results" style="--n: 3">
+      <div><dt>waypoints reached on a clear route, 128.7 s</dt><dd>3/3</dd></div>
+      <div><dt>runs that reached every waypoint with an unmapped box on the route</dt><dd>3 of 3</dd></div>
+      <div><dt>with B blocked: B timed out after 60 s and was skipped</dt><dd>2/3</dd></div>
+    </dl>
+
+    <h3>Tests</h3>
+    <div class="table-wrap tests stack">
       <table>
         <thead><tr><th>Test</th><th>Setup</th><th>Result</th></tr></thead>
         <tbody>
-          <tr><td>1. Clear route</td><td>No extra obstacles</td><td>3/3 waypoints reached, 128.7 s</td></tr>
-          <tr><td>2. Obstacle on route</td><td>0.3 m box on the B → C route, not in the map</td><td>3/3 reached in all 3 runs. The planned B → C path was 1.71 m with the box, against 1.46 m without it</td></tr>
-          <tr><td>3. Unreachable waypoint</td><td>Box placed on top of B, 60 s timeout</td><td>A reached, B timed out and was skipped, C reached: 2/3, 105.6 s</td></tr>
+          <tr><td>1. Clear route</td><td data-label="Setup">No extra obstacles</td><td data-label="Result">3/3 waypoints reached, 128.7 s</td></tr>
+          <tr><td>2. Obstacle on route</td><td data-label="Setup">0.3 m box on the B → C route, not in the map</td><td data-label="Result">3/3 reached in all 3 runs. The planned B → C path was 1.71 m with the box, against 1.46 m without it</td></tr>
+          <tr><td>3. Unreachable waypoint</td><td data-label="Setup">Box placed on top of B, 60 s timeout</td><td data-label="Result">A reached, B timed out and was skipped, C reached: 2/3, 105.6 s</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note">Limits: only a few runs per test, one obstacle size, simulation only (Gazebo ran at about 50–75% of real time on my laptop), no moving obstacles and no real robot.</p>
+    <p class="small" style="margin-top: 14px">Limits: only a few runs per test, one obstacle size, simulation only (Gazebo ran at about 50–75% of real time on my laptop), no moving obstacles and no real robot.</p>
 
-    <div class="callout">
-      <p><strong>The main problem I debugged.</strong> Nav2 planned a path, but the robot did not move, and the log said "Failed to make progress". From the logs and topic rates, I found that the slow simulator delivered LiDAR scans only about every 0.6 s, while Nav2's collision monitor, the last safety check before speed commands reach the wheels, treats scans older than 0.2 s as stale and blocks every command.</p>
+    <div class="note">
+      <h3>The main problem I debugged</h3>
+      <p>Nav2 planned a path, but the robot did not move, and the log said "Failed to make progress". From the logs and topic rates, I found that the slow simulator delivered LiDAR scans only about once every 0.6 s, while Nav2's collision monitor, the last safety check before speed commands reach the wheels, treats scans older than 0.2 s as stale and blocks every command.</p>
       <p>I raised <code>scan.source_timeout</code> to 2.0 s in a project copy of the Nav2 parameter file. Changing it at runtime had no effect, because the node only reads it at startup. On a real robot this setting would be unsafe, since it would let the robot act on old sensor data. Here it only compensates for a slow simulator.</p>
     </div>
 
-    <figure style="max-width:420px;margin-top:28px">
-      <div class="frame"><img src="assets/ros-slam-map.png" width="888" height="824" alt="Occupancy grid map of the arena: nine pillars inside a hexagonal wall" loading="lazy" style="image-rendering:pixelated;width:100%;height:auto"></div>
+    <figure class="fig map">
+      <div class="frame"><img src="assets/ros-slam-map.png" width="888" height="824" alt="Occupancy grid map of the arena: nine pillars inside a hexagonal wall" loading="lazy"></div>
       <figcaption>The saved SLAM map (5 cm cells): nine pillars inside a hexagonal wall</figcaption>
     </figure>
 
-    <p class="note">Built on TurtleBot3 (ROBOTIS), SLAM Toolbox and Nav2. The patrol node was written with AI assistance and explained to me block by block; the setup, testing and debugging were my own.</p>
+    <p class="small" style="margin-top: 24px">Built on TurtleBot3 (ROBOTIS), SLAM Toolbox and Nav2. The patrol node was written with AI assistance and I reviewed it section by section; I did the setup, integration, testing and debugging, including the collision-monitor problem above.</p>
 
     <div class="actions">
       <a class="btn" href="https://github.com/ELARA-sys/turtlebot3-port-patrol">Code, test log and README on GitHub</a>
@@ -355,40 +566,210 @@
   </section>
 
   <!-- ============ WELD ============ -->
-  <section class="project" id="weld">
-    <p class="eyebrow">Project 3 · Machine vision</p>
-    <h2>Weld crack detection in X-ray images</h2>
-    <p class="meta">2024 · Final-year thesis, Hebei University of Science and Technology</p>
-    <ul class="tags"><li>Python</li><li>OpenCV</li><li>YOLOv5</li><li>Data labelling</li></ul>
-    <p class="lead">Weld inspection is skilled work that is usually done by eye. For my final-year thesis, I built a system that detects cracks in X-ray images of welds. I enhanced the images with OpenCV, labelled the cracks myself and trained a YOLOv5 detector. It was my first experience of teaching a machine to see, and it showed me how much a model depends on how carefully its data is prepared.</p>
-    <div class="stats">
-      <div class="stat"><div class="num">364</div><div class="lbl">X-ray images</div></div>
-      <div class="stat"><div class="num">2,000+</div><div class="lbl">cracks labelled</div></div>
-      <div class="stat"><div class="num">0.94</div><div class="lbl">F1 score on the validation images</div></div>
+  <section class="project" id="weld" aria-labelledby="weld-title">
+    <div class="project-head">
+      <h2 id="weld-title">Weld crack detection in X-ray images</h2>
+      <p class="summary">Weld inspection is skilled work that is usually done by eye. For my final-year thesis, I built a system that detects cracks in X-ray images of welds. It was my first experience of teaching a machine to see, and it showed me how much a model depends on how carefully its data is prepared.</p>
+      <dl class="titleblock">
+        <div><dt>Period</dt><dd>2024</dd></div>
+        <div><dt>Role</dt><dd>Image preparation, labelling, training and evaluation</dd></div>
+        <div><dt>Team</dt><dd>Individual final-year thesis, Hebei University of Science and Technology</dd></div>
+        <div><dt>Tools</dt><dd><ul class="tags"><li>Python</li><li>OpenCV</li><li>YOLOv5</li><li>LabelImg</li></ul></dd></div>
+      </dl>
+    </div>
+
+    <figure class="fig">
+      <div class="pairs">
+        <div>
+          <div class="two">
+            <div><img src="assets/weld-354-labels.jpg" width="560" height="560" alt="X-ray of a weld with four cracks boxed by hand" loading="lazy"><span>My labels</span></div>
+            <div><img src="assets/weld-354-pred.jpg" width="560" height="560" alt="The same weld with four predicted crack boxes, each at confidence 0.8" loading="lazy"><span>Model predictions</span></div>
+          </div>
+          <p class="small" style="margin: 8px 0 0">All four labelled cracks found, each at confidence 0.8.</p>
+        </div>
+        <div>
+          <div class="two">
+            <div><img src="assets/weld-358-labels.jpg" width="560" height="560" alt="X-ray of a weld with three cracks boxed by hand" loading="lazy"><span>My labels</span></div>
+            <div><img src="assets/weld-358-pred.jpg" width="560" height="560" alt="The same weld with predicted boxes, including one at the right edge where there is no label" loading="lazy"><span>Model predictions</span></div>
+          </div>
+          <p class="small" style="margin: 8px 0 0">Two errors: one labelled crack on the right is not matched well, and the model boxes a line at the right edge that I had not labelled.</p>
+        </div>
+      </div>
+      <figcaption>Two validation images. YOLOv5 draws every predicted box above confidence 0.25, so some low-confidence boxes appear that would not count at the threshold used for the F1 score.</figcaption>
+    </figure>
+
+    <dl class="results">
+      <div><dt>X-ray images</dt><dd>364</dd></div>
+      <div><dt>cracks labelled by hand</dt><dd>2,000+</dd></div>
+      <div><dt>F1 score on a small validation set</dt><dd>0.94</dd></div>
+      <div><dt>mAP@0.5 on the same set</dt><dd>0.975</dd></div>
+    </dl>
+
+    <div class="prose">
+      <h3>What I did</h3>
+      <ul>
+        <li>Enhanced the X-ray images with OpenCV: histogram equalisation for contrast, then Laplacian sharpening to bring out the crack edges.</li>
+        <li>Cut the regions with cracks out of the full radiographs and resized them to one size.</li>
+        <li>Expanded the set with mirrored and rotated copies, then labelled every crack by hand in LabelImg.</li>
+        <li>Trained a YOLOv5s detector from pretrained weights for 100 epochs and checked it with F1 and precision–recall curves.</li>
+      </ul>
+    </div>
+
+    <figure class="fig narrow">
+      <div class="grid g2">
+        <div class="frame r11"><img src="assets/weld-raw.jpg" width="480" height="480" alt="Grey X-ray of a vertical weld seam with faint dark cracks" loading="lazy"></div>
+        <div class="frame r11"><img src="assets/weld-enhanced.jpg" width="480" height="480" alt="The same weld after enhancement, with higher contrast and sharper crack lines" loading="lazy"></div>
+      </div>
+      <figcaption>The same weld before and after enhancement with OpenCV (figures from my thesis).</figcaption>
+    </figure>
+
+    <figure class="fig curves">
+      <div class="grid g2">
+        <img src="assets/weld-f1-curve.png" width="1200" height="789" alt="F1 score against confidence threshold, peaking at 0.94 at a threshold of 0.468" loading="lazy">
+        <img src="assets/weld-pr-curve.png" width="1200" height="789" alt="Precision against recall, with an area of 0.975 (mAP at IoU 0.5)" loading="lazy">
+      </div>
+      <figcaption>F1 against confidence threshold, with a peak of 0.94 at 0.468, and precision against recall, with mAP@0.5 of 0.975. Both on the validation images, from the YOLOv5 training run behind my thesis results.</figcaption>
+    </figure>
+
+    <div class="note">
+      <h3>Limits</h3>
+      <p>The validation set was small, and there was no separate test set. I also mirrored and rotated the images before splitting them, so the validation images had near-copies in the training set. The score is therefore optimistic, and it would probably be lower on new welds. Next time I would split by original radiograph first and augment only the training images.</p>
     </div>
   </section>
 
   <!-- ============ LOOMYTRIP ============ -->
-  <section class="project" id="loomytrip">
-    <p class="eyebrow">Project 4 · Planning and evaluation</p>
-    <h2>LoomyTrip: route ordering and model evaluation</h2>
-    <p class="meta">Jul–Aug 2026 · NUS-ISS capstone, team of seven · I led the AI/ML service</p>
-    <ul class="tags"><li>Python</li><li>FastAPI</li><li>2-opt local search</li><li>Precision / recall / F1</li><li>AWS ECS</li></ul>
-    <p class="lead">LoomyTrip is a travel planner for Singapore that turns a free-text trip description into a day-by-day itinerary. Two parts of my work on its AI service are close to robotics.</p>
+  <section class="project" id="loomytrip" aria-labelledby="loomytrip-title">
+    <div class="project-head">
+      <h2 id="loomytrip-title">LoomyTrip: route ordering and model evaluation</h2>
+      <p class="summary">LoomyTrip is a travel planner for Singapore that turns a free-text trip description into a day-by-day itinerary. I was the AI/ML lead and owned its Python AI service. Two parts of that work are close to robotics: ordering stops into a short route, and measuring a model against ground truth before trusting it.</p>
+      <dl class="titleblock">
+        <div><dt>Period</dt><dd>Jul–Aug 2026</dd></div>
+        <div><dt>Role</dt><dd>AI/ML lead: the ML/AI service</dd></div>
+        <div><dt>Team</dt><dd>NUS-ISS capstone, team of seven; the app and repository belong to the whole team</dd></div>
+        <div><dt>Tools</dt><dd><ul class="tags"><li>Python</li><li>FastAPI</li><li>2-opt local search</li><li>Precision / recall / F1</li><li>Amazon Bedrock</li></ul></dd></div>
+      </dl>
+    </div>
+
+    <div class="routes">
+      <figure>
+        <p class="head">Nearest neighbour <span>14.0 km</span></p>
+        <svg class="route nn" viewBox="0 0 396 264" role="img" aria-labelledby="route-nn-title">
+<title id="route-nn-title">Nearest-neighbour route, 14.0 km: Raffles Landing Site, Capitol Building, Lasalle College, Thian Hock Keng Temple, Marina Barrage, Botanic Gardens</title>
+<polyline points="226.2,179.5 230.3,145.0 230.5,93.2 207.5,219.7 346.2,219.7 24.0,30.0" class="leg"/>
+<circle cx="226.2" cy="179.5" r="9" class="stop first"/><text x="226.2" y="183.1" class="num">1</text>
+<text x="206.2" y="183.5" text-anchor="end" class="place">Raffles Landing Site</text>
+<circle cx="230.3" cy="145.0" r="9" class="stop"/><text x="230.3" y="148.6" class="num">2</text>
+<text x="243.3" y="149.0" text-anchor="start" class="place">Capitol Building</text>
+<circle cx="230.5" cy="93.2" r="9" class="stop"/><text x="230.5" y="96.8" class="num">3</text>
+<text x="243.5" y="97.2" text-anchor="start" class="place">Lasalle College</text>
+<circle cx="207.5" cy="219.7" r="9" class="stop"/><text x="207.5" y="223.3" class="num">4</text>
+<text x="194.5" y="223.7" text-anchor="end" class="place">Thian Hock Keng Temple</text>
+<circle cx="346.2" cy="219.7" r="9" class="stop"/><text x="346.2" y="223.3" class="num">5</text>
+<text x="346.2" y="246.7" text-anchor="middle" class="place">Marina Barrage</text>
+<circle cx="24.0" cy="30.0" r="9" class="stop"/><text x="24.0" y="33.6" class="num">6</text>
+<text x="38.0" y="28.0" text-anchor="start" class="place">Botanic Gardens</text>
+<g class="scale"><line x1="24" y1="252" x2="76" y2="252"/><text x="50.0" y="246" text-anchor="middle">1 km</text></g>
+</svg>
+      </figure>
+      <figure>
+        <p class="head">After 2-opt <span>11.3 km</span></p>
+        <svg class="route opt" viewBox="0 0 396 264" role="img" aria-labelledby="route-opt-title">
+<title id="route-opt-title">Route after 2-opt, 11.3 km: Raffles Landing Site, Thian Hock Keng Temple, Marina Barrage, Capitol Building, Lasalle College, Botanic Gardens</title>
+<polyline points="226.2,179.5 207.5,219.7 346.2,219.7 230.3,145.0 230.5,93.2 24.0,30.0" class="leg"/>
+<circle cx="226.2" cy="179.5" r="9" class="stop first"/><text x="226.2" y="183.1" class="num">1</text>
+<text x="206.2" y="183.5" text-anchor="end" class="place">Raffles Landing Site</text>
+<circle cx="207.5" cy="219.7" r="9" class="stop"/><text x="207.5" y="223.3" class="num">2</text>
+<text x="194.5" y="223.7" text-anchor="end" class="place">Thian Hock Keng Temple</text>
+<circle cx="346.2" cy="219.7" r="9" class="stop"/><text x="346.2" y="223.3" class="num">3</text>
+<text x="346.2" y="246.7" text-anchor="middle" class="place">Marina Barrage</text>
+<circle cx="230.3" cy="145.0" r="9" class="stop"/><text x="230.3" y="148.6" class="num">4</text>
+<text x="243.3" y="149.0" text-anchor="start" class="place">Capitol Building</text>
+<circle cx="230.5" cy="93.2" r="9" class="stop"/><text x="230.5" y="96.8" class="num">5</text>
+<text x="243.5" y="97.2" text-anchor="start" class="place">Lasalle College</text>
+<circle cx="24.0" cy="30.0" r="9" class="stop"/><text x="24.0" y="33.6" class="num">6</text>
+<text x="38.0" y="28.0" text-anchor="start" class="place">Botanic Gardens</text>
+<g class="scale"><line x1="24" y1="252" x2="76" y2="252"/><text x="50.0" y="246" text-anchor="middle">1 km</text></g>
+</svg>
+      </figure>
+    </div>
+    <p class="small" style="margin-top: 8px">The route from the 50-route test where 2-opt helped most: 19.2% shorter. On average over all 50 routes the gain was 1.8%. Stops are real attractions from the team's dataset, numbered in visiting order; distances are straight lines.</p>
+
+    <dl class="results" style="--n: 3">
+      <div><dt>shorter on average with 2-opt, over 50 routes</dt><dd>1.8%</dd></div>
+      <div><dt>routes made longer</dt><dd>0 of 50</dd></div>
+      <div><dt>place-extraction F1 with fuzzy matching (0.833 strict), on 3 labelled samples</dt><dd>0.944</dd></div>
+    </dl>
+
     <div class="prose">
+      <h3>What I did</h3>
       <ul>
-        <li><strong>Route ordering.</strong> Each day's stops are ordered with a nearest-neighbour route, which a 2-opt local search then improves by reversing any segment that shortens the total distance. On 50 seeded routes of real Singapore attractions, it was 1.8% shorter on average and never longer. On a deliberately bad layout, it cut the distance by 31.3%.</li>
-        <li><strong>Evaluation instead of judging by eye.</strong> I scored the language model's place extraction against hand-labelled answers with precision, recall and F1, and used accuracy, speed and cost to choose the model.</li>
+        <li>Ordered each day's stops with a nearest-neighbour route, then added a 2-opt local search that reverses any segment of the route if that makes it shorter. It can only shorten a route, never lengthen it.</li>
+        <li>Tested it on 50 seeded sets of six real Singapore attractions: 1,209.4 km in total before 2-opt and 1,187.2 km after. On a deliberately bad layout it cut the distance by 31.3%.</li>
+        <li>Tried a local model through Ollama first, then compared three cloud models on Amazon Bedrock against hand-labelled answers, and chose Amazon Nova Lite on accuracy, speed and cost.</li>
+        <li>Turned that comparison into repeatable scripts that score place extraction with precision, recall and F1, using strict and fuzzy name matching.</li>
       </ul>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="num">1.8%</div><div class="lbl">shorter routes on average with 2-opt (50 routes)</div></div>
-      <div class="stat"><div class="num">0 / 50</div><div class="lbl">routes made longer</div></div>
-      <div class="stat"><div class="num">0.944</div><div class="lbl">extraction F1 with fuzzy matching (0.833 strict)</div></div>
+
+    <figure class="fig">
+      <div class="table-wrap models stack">
+        <table>
+          <thead><tr><th>Model</th><th class="n">Strict F1</th><th class="n">Fuzzy F1</th><th class="n">Average time per call</th><th class="n">Estimated cost, 3 samples</th></tr></thead>
+          <tbody>
+            <tr class="chosen"><td>Amazon Nova Lite (chosen)</td><td class="n" data-label="Strict F1">0.833</td><td class="n" data-label="Fuzzy F1">0.944</td><td class="n" data-label="Average time per call">1.62 s</td><td class="n" data-label="Estimated cost, 3 samples">$0.00034</td></tr>
+            <tr><td>Claude Haiku 4.5</td><td class="n" data-label="Strict F1">0.727</td><td class="n" data-label="Fuzzy F1">0.727</td><td class="n" data-label="Average time per call">4.26 s</td><td class="n" data-label="Estimated cost, 3 samples">$0.00889</td></tr>
+            <tr><td>Claude Sonnet 4.5</td><td class="n" data-label="Strict F1">0.811</td><td class="n" data-label="Fuzzy F1">0.811</td><td class="n" data-label="Average time per call">5.13 s</td><td class="n" data-label="Estimated cost, 3 samples">$0.02474</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>Place extraction on the same 3 hand-labelled trip descriptions. Times and costs come from the first comparison run, and F1 from the scripted evaluation.</figcaption>
+    </figure>
+
+    <p class="small" style="margin-top: 20px">Limits: only three labelled samples, so the F1 scores are a rough guide. Nova Lite also invented a year for the trip dates in two of the three samples, the most of the three models, so place accuracy and date accuracy have to be checked separately. The route test uses straight-line distances, not real travel times.</p>
+    <p class="small">The backend, Android app and web app were owned by other team members.</p>
+
+    <div class="actions">
+      <a class="btn" href="https://github.com/ArTNeby1/LoomyTrip/tree/main/ML">Team repository on GitHub (my part is the ML folder)</a>
     </div>
   </section>
 
-  <footer>Zhang Mingchang · <a href="https://github.com/ELARA-sys">github.com/ELARA-sys</a></footer>
-</div>
+</main>
+
+<footer>
+  <div class="wrap">
+  <ul>
+    <li>Zhang Mingchang</li>
+    <li><a href="mailto:zhangmingchang@u.nus.edu">zhangmingchang@u.nus.edu</a></li>
+    <li><a href="https://github.com/ELARA-sys">github.com/ELARA-sys</a></li>
+    <li>Updated October 2026</li>
+  </ul>
+  </div>
+</footer>
+
+<script>
+  // Load a YouTube player only when someone presses play.
+  document.querySelectorAll('a.yt[data-yt]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + link.dataset.yt + '?autoplay=1&playsinline=1&rel=0';
+      frame.title = link.getAttribute('aria-label').replace('Play video: ', '');
+      frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      var box = document.createElement('div');
+      box.className = 'yt';
+      box.appendChild(frame);
+      link.replaceWith(box);
+      frame.focus();
+    });
+  });
+  // Respect reduced-motion settings: stop the looping demo and show controls instead.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('video[autoplay]').forEach(function (video) {
+      video.removeAttribute('autoplay');
+      video.pause();
+      video.controls = true;
+    });
+  }
+</script>
 </body>
 </html>
